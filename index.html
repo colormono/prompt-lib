@@ -263,6 +263,76 @@
         height: 15px;
       }
 
+      /* ─── Edit Mode Styles ─── */
+      .form-card.editing {
+        border-color: rgba(251, 191, 36, 0.5);
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+      }
+
+      .edit-mode-banner {
+        background: rgba(251, 191, 36, 0.1);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        border-radius: var(--radius);
+        padding: 10px 14px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .edit-mode-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: #d4a017;
+        font-weight: 500;
+      }
+
+      .edit-mode-label svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .btn-cancel-edit {
+        padding: 6px 12px;
+        background: transparent;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        border-radius: 5px;
+        color: var(--text-muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .btn-cancel-edit:hover {
+        background: rgba(251, 191, 36, 0.08);
+        border-color: #d4a017;
+        color: var(--text-primary);
+      }
+
+      .btn-cancel-edit svg {
+        width: 12px;
+        height: 12px;
+      }
+
+      .btn-save.update-mode {
+        background: #fbbf24;
+        color: #0a0e17;
+      }
+
+      .btn-save.update-mode:hover {
+        background: #fcd34d;
+        box-shadow: 0 4px 18px rgba(251, 191, 36, 0.35);
+      }
+
       /* ─── Section label ─── */
       .section-label {
         display: flex;
@@ -707,6 +777,11 @@
         background: var(--accent-dim);
         border-color: rgba(63, 212, 160, 0.35);
         color: var(--accent);
+      }
+      .btn-icon.btn-edit:hover {
+        background: rgba(251, 191, 36, 0.12);
+        border-color: rgba(251, 191, 36, 0.35);
+        color: #fbbf24;
       }
 
       /* ─── Toast ─── */
@@ -1264,8 +1339,44 @@
         </div>
       </header>
 
-      <!-- Create Form -->
-      <div class="form-card">
+      <!-- Create/Edit Form -->
+      <div class="form-card" id="formCard">
+        <!-- Edit Mode Banner (hidden by default) -->
+        <div class="edit-mode-banner" id="editModeBanner" style="display: none">
+          <div class="edit-mode-label">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              />
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
+            </svg>
+            <span>Editing Prompt</span>
+          </div>
+          <button class="btn-cancel-edit" onclick="cancelEdit()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+            Cancel
+          </button>
+        </div>
+
         <div class="form-row">
           <label for="promptTitle">Title</label>
           <input
@@ -1316,7 +1427,7 @@
             </select>
           </div>
         </div>
-        <button class="btn-save" onclick="savePrompt()">
+        <button class="btn-save" id="saveBtn" onclick="savePrompt()">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -1328,7 +1439,7 @@
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
-          Save Prompt
+          <span id="saveBtnText">Save Prompt</span>
         </button>
       </div>
 
@@ -1468,6 +1579,9 @@
       (function () {
         const STORAGE_KEY = "promptLibrary_v1";
         const THEME_KEY = "promptLibrary_theme";
+
+        // Edit mode state
+        let editingIndex = null;
 
         /* ══════════════════════════════════════════════════════════════
          * THEME SYSTEM
@@ -2063,6 +2177,13 @@
           <div class="card-footer">
             <span class="card-date">${formatDate(p.createdAt)}</span>
             <div class="card-actions">
+              <button class="btn-icon btn-edit" onclick="editPrompt(${prompts.indexOf(
+                p
+              )})" title="Edit prompt" tabindex="0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
               <button class="btn-icon btn-copy" onclick="copyPrompt(${prompts.indexOf(
                 p
               )})" title="Copy prompt" tabindex="0">
@@ -2250,35 +2371,181 @@
             return;
           }
 
-          // Create metadata if model name is provided
-          let metadata = null;
-          if (modelName) {
-            try {
-              metadata = trackModel(modelName, content, isCode);
-            } catch (error) {
-              showToast(error.message, "error");
-              return;
-            }
-          }
-
           const prompts = load();
-          prompts.unshift({
-            title,
-            content,
-            createdAt: Date.now(),
-            rating: 0,
-            notes: [],
-            metadata,
-          });
-          persist(prompts);
 
-          titleEl.value = "";
-          contentEl.value = "";
-          modelEl.value = "";
-          typeEl.value = "text";
-          render();
-          showToast("Prompt saved successfully.", "success");
+          // Check if we're editing an existing prompt
+          if (editingIndex !== null) {
+            // Update existing prompt
+            const existingPrompt = prompts[editingIndex];
+
+            // Create or update metadata
+            let metadata = existingPrompt.metadata;
+            if (modelName) {
+              try {
+                if (metadata) {
+                  // Update existing metadata
+                  metadata = {
+                    ...metadata,
+                    model: modelName,
+                    tokenEstimate: estimateTokens(content, isCode),
+                  };
+                  metadata = updateTimestamps(metadata);
+                } else {
+                  // Create new metadata
+                  metadata = trackModel(modelName, content, isCode);
+                }
+              } catch (error) {
+                showToast(error.message, "error");
+                return;
+              }
+            } else {
+              // If model name is cleared, remove metadata
+              metadata = null;
+            }
+
+            prompts[editingIndex] = {
+              ...existingPrompt,
+              title,
+              content,
+              metadata,
+            };
+
+            persist(prompts);
+            clearForm();
+            render();
+            showToast("Prompt updated successfully.", "success");
+
+            // Scroll to the updated prompt
+            setTimeout(() => {
+              const cards = document.querySelectorAll(".prompt-card");
+              if (cards[editingIndex]) {
+                cards[editingIndex].scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+                // Brief highlight effect
+                cards[editingIndex].style.transform = "scale(1.02)";
+                setTimeout(() => {
+                  cards[editingIndex].style.transform = "";
+                }, 300);
+              }
+            }, 100);
+          } else {
+            // Create new prompt
+            let metadata = null;
+            if (modelName) {
+              try {
+                metadata = trackModel(modelName, content, isCode);
+              } catch (error) {
+                showToast(error.message, "error");
+                return;
+              }
+            }
+
+            prompts.unshift({
+              title,
+              content,
+              createdAt: Date.now(),
+              rating: 0,
+              notes: [],
+              metadata,
+            });
+
+            persist(prompts);
+            clearForm();
+            render();
+            showToast("Prompt saved successfully.", "success");
+          }
         };
+
+        /* ── clear form ── */
+        function clearForm() {
+          document.getElementById("promptTitle").value = "";
+          document.getElementById("promptContent").value = "";
+          document.getElementById("promptModel").value = "";
+          document.getElementById("promptType").value = "text";
+          exitEditMode();
+        }
+
+        /* ── edit mode ── */
+        window.editPrompt = function (index) {
+          const prompts = load();
+          const prompt = prompts[index];
+
+          if (!prompt) return;
+
+          // Store the editing index
+          editingIndex = index;
+
+          // Populate form
+          document.getElementById("promptTitle").value = prompt.title;
+          document.getElementById("promptContent").value = prompt.content;
+          document.getElementById("promptModel").value = prompt.metadata
+            ? prompt.metadata.model
+            : "";
+          document.getElementById("promptType").value = prompt.metadata?.tokenEstimate
+            ? "code"
+            : "text";
+
+          // Update UI to edit mode
+          enterEditMode();
+
+          // Scroll to form
+          document.getElementById("formCard").scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+
+          // Focus title field
+          setTimeout(() => {
+            document.getElementById("promptTitle").focus();
+          }, 300);
+        };
+
+        /* ── cancel edit ── */
+        window.cancelEdit = function () {
+          clearForm();
+          showToast("Edit cancelled.");
+        };
+
+        /* ── enter edit mode ── */
+        function enterEditMode() {
+          const formCard = document.getElementById("formCard");
+          const banner = document.getElementById("editModeBanner");
+          const saveBtn = document.getElementById("saveBtn");
+          const saveBtnText = document.getElementById("saveBtnText");
+
+          formCard.classList.add("editing");
+          banner.style.display = "flex";
+          saveBtn.classList.add("update-mode");
+
+          // Update button icon and text
+          saveBtn.querySelector("svg").innerHTML = `
+            <polyline points="20 6 9 17 4 12"/>
+          `;
+          saveBtnText.textContent = "Update Prompt";
+        }
+
+        /* ── exit edit mode ── */
+        function exitEditMode() {
+          const formCard = document.getElementById("formCard");
+          const banner = document.getElementById("editModeBanner");
+          const saveBtn = document.getElementById("saveBtn");
+          const saveBtnText = document.getElementById("saveBtnText");
+
+          formCard.classList.remove("editing");
+          banner.style.display = "none";
+          saveBtn.classList.remove("update-mode");
+
+          // Reset button icon and text
+          saveBtn.querySelector("svg").innerHTML = `
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          `;
+          saveBtnText.textContent = "Save Prompt";
+
+          editingIndex = null;
+        }
 
         /* ── delete ── */
         window.deletePrompt = function (index) {
@@ -2411,13 +2678,31 @@
           }
         };
 
-        /* ── enter key on input ── */
+        /* ── keyboard shortcuts ── */
         document
           .getElementById("promptTitle")
           .addEventListener("keydown", function (e) {
             if (e.key === "Enter") {
               e.preventDefault();
               document.getElementById("promptContent").focus();
+            }
+            // Escape to cancel edit
+            if (e.key === "Escape" && editingIndex !== null) {
+              cancelEdit();
+            }
+          });
+
+        document
+          .getElementById("promptContent")
+          .addEventListener("keydown", function (e) {
+            // Ctrl+Enter or Cmd+Enter to save
+            if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+              e.preventDefault();
+              savePrompt();
+            }
+            // Escape to cancel edit
+            if (e.key === "Escape" && editingIndex !== null) {
+              cancelEdit();
             }
           });
 
