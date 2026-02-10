@@ -19,6 +19,14 @@
       }
 
       :root {
+        --radius: 10px;
+        --radius-lg: 14px;
+        --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Dark theme (default) */
+      :root,
+      [data-theme="dark"] {
         --bg-base: #0a0e17;
         --bg-surface: #111827;
         --bg-elevated: #1a2234;
@@ -33,9 +41,24 @@
         --text-muted: #4f5a72;
         --red: #f06c6c;
         --red-dim: rgba(240, 108, 108, 0.12);
-        --radius: 10px;
-        --radius-lg: 14px;
-        --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Light theme */
+      [data-theme="light"] {
+        --bg-base: #f8f9fa;
+        --bg-surface: #ffffff;
+        --bg-elevated: #f1f3f5;
+        --bg-input: #ffffff;
+        --border: #dee2e6;
+        --border-focus: #20c997;
+        --accent: #20c997;
+        --accent-dim: rgba(32, 201, 151, 0.08);
+        --accent-glow: rgba(32, 201, 151, 0.2);
+        --text-primary: #212529;
+        --text-secondary: #495057;
+        --text-muted: #868e96;
+        --red: #dc3545;
+        --red-dim: rgba(220, 53, 69, 0.08);
       }
 
       html {
@@ -1063,6 +1086,64 @@
         gap: 12px;
       }
 
+      /* ─── Theme Toggle ─── */
+      .theme-toggle {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .theme-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition);
+        position: relative;
+      }
+
+      .theme-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .theme-btn:hover {
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+      }
+
+      .theme-btn.active {
+        background: var(--accent-dim);
+        color: var(--accent);
+      }
+
+      .theme-btn.active::after {
+        content: "";
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 16px;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 2px;
+      }
+
       /* ─── Responsive ─── */
       @media (max-width: 540px) {
         .wrapper {
@@ -1080,10 +1161,82 @@
         .form-row-inline {
           grid-template-columns: 1fr;
         }
+        .theme-toggle {
+          top: 16px;
+          right: 16px;
+        }
       }
     </style>
   </head>
   <body>
+    <!-- ─── Theme Toggle ─── -->
+    <div class="theme-toggle">
+      <button
+        class="theme-btn"
+        data-theme="light"
+        onclick="setTheme('light')"
+        title="Light mode"
+        aria-label="Light mode"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+      </button>
+      <button
+        class="theme-btn"
+        data-theme="dark"
+        onclick="setTheme('dark')"
+        title="Dark mode"
+        aria-label="Dark mode"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </button>
+      <button
+        class="theme-btn"
+        data-theme="system"
+        onclick="setTheme('system')"
+        title="System preference"
+        aria-label="System preference"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      </button>
+    </div>
+
     <!-- ─── App ─── -->
     <div class="wrapper">
       <!-- Header -->
@@ -1314,6 +1467,82 @@
     <script>
       (function () {
         const STORAGE_KEY = "promptLibrary_v1";
+        const THEME_KEY = "promptLibrary_theme";
+
+        /* ══════════════════════════════════════════════════════════════
+         * THEME SYSTEM
+         * ══════════════════════════════════════════════════════════════ */
+
+        /**
+         * Gets the effective theme based on preference and system settings
+         * @param {string} preference - User preference: 'light', 'dark', or 'system'
+         * @returns {string} - Effective theme: 'light' or 'dark'
+         */
+        function getEffectiveTheme(preference) {
+          if (preference === "system") {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          }
+          return preference;
+        }
+
+        /**
+         * Applies the theme to the document
+         * @param {string} theme - Theme to apply: 'light' or 'dark'
+         */
+        function applyTheme(theme) {
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+
+        /**
+         * Updates the active state of theme buttons
+         * @param {string} preference - Current theme preference
+         */
+        function updateThemeButtons(preference) {
+          document.querySelectorAll(".theme-btn").forEach((btn) => {
+            if (btn.dataset.theme === preference) {
+              btn.classList.add("active");
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+        }
+
+        /**
+         * Sets the theme preference and applies it
+         * @param {string} preference - Theme preference: 'light', 'dark', or 'system'
+         */
+        window.setTheme = function (preference) {
+          localStorage.setItem(THEME_KEY, preference);
+          const effectiveTheme = getEffectiveTheme(preference);
+          applyTheme(effectiveTheme);
+          updateThemeButtons(preference);
+        };
+
+        /**
+         * Initializes the theme system
+         */
+        function initTheme() {
+          const savedPreference = localStorage.getItem(THEME_KEY) || "system";
+          const effectiveTheme = getEffectiveTheme(savedPreference);
+          applyTheme(effectiveTheme);
+          updateThemeButtons(savedPreference);
+
+          // Listen for system theme changes when in system mode
+          window
+            .matchMedia("(prefers-color-scheme: dark)")
+            .addEventListener("change", (e) => {
+              const currentPreference = localStorage.getItem(THEME_KEY);
+              if (currentPreference === "system") {
+                applyTheme(e.matches ? "dark" : "light");
+              }
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════════════
+         * END THEME SYSTEM
+         * ══════════════════════════════════════════════════════════════ */
 
         /* ══════════════════════════════════════════════════════════════
          * METADATA TRACKING SYSTEM
@@ -2427,6 +2656,7 @@
          * ══════════════════════════════════════════════════════════════ */
 
         /* ── init ── */
+        initTheme();
         render();
       })();
     </script>
