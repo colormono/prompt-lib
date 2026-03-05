@@ -170,6 +170,133 @@
         }
       }
 
+      /* ─── View Controls ─── */
+      .view-controls {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 16px;
+        margin-left: 52px;
+      }
+
+      .view-toggle {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 4px;
+      }
+
+      .view-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition);
+      }
+
+      .view-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .view-btn:hover {
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+      }
+
+      .view-btn.active {
+        background: var(--accent-dim);
+        color: var(--accent);
+      }
+
+      /* ─── Search Bar ─── */
+      .search-container {
+        flex: 1;
+        max-width: 320px;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text-primary);
+        font-family: "Sora", sans-serif;
+        font-size: 0.82rem;
+        padding: 9px 36px 9px 14px;
+        outline: none;
+        transition: border-color var(--transition), box-shadow var(--transition);
+      }
+
+      .search-input:focus {
+        border-color: var(--border-focus);
+        box-shadow: 0 0 0 3px var(--accent-dim);
+      }
+
+      .search-input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .search-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        color: var(--text-muted);
+        pointer-events: none;
+      }
+
+      .btn-clear-search {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 4px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition);
+      }
+
+      .btn-clear-search:hover {
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+      }
+
+      .btn-clear-search.show {
+        display: flex;
+      }
+
+      .btn-clear-search svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .search-results-count {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-left: 8px;
+      }
+
       /* ─── Form Card ─── */
       .form-card {
         background: var(--bg-surface);
@@ -1219,6 +1346,282 @@
         border-radius: 2px;
       }
 
+      /* ─── Table View ─── */
+      .table-container {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+
+      .prompts-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+      }
+
+      .prompts-table thead {
+        background: var(--bg-elevated);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .prompts-table th {
+        text-align: left;
+        padding: 14px 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: background var(--transition);
+      }
+
+      .prompts-table th:hover {
+        background: var(--bg-input);
+        color: var(--text-primary);
+      }
+
+      .sort-icon {
+        display: inline-block;
+        margin-left: 6px;
+        font-size: 0.7rem;
+        opacity: 0.5;
+      }
+
+      .sort-icon.active {
+        opacity: 1;
+        color: var(--accent);
+      }
+
+      .prompts-table tbody tr.table-row {
+        border-bottom: 1px solid var(--border);
+        transition: background var(--transition);
+        cursor: pointer;
+      }
+
+      .prompts-table tbody tr.table-row:hover {
+        background: var(--bg-elevated);
+      }
+
+      .prompts-table td {
+        padding: 14px 16px;
+        color: var(--text-secondary);
+      }
+
+      .col-index {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--accent);
+        font-weight: 500;
+        width: 60px;
+      }
+
+      .col-title {
+        font-weight: 500;
+        color: var(--text-primary);
+        max-width: 300px;
+      }
+
+      .title-cell {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: space-between;
+      }
+
+      .title-text {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .btn-expand {
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition);
+        flex-shrink: 0;
+      }
+
+      .btn-expand:hover {
+        background: var(--bg-input);
+        color: var(--accent);
+      }
+
+      .btn-expand svg {
+        width: 14px;
+        height: 14px;
+        transition: transform var(--transition);
+      }
+
+      .btn-expand.expanded svg {
+        transform: rotate(180deg);
+      }
+
+      .col-model {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--accent);
+        width: 140px;
+      }
+
+      .col-rating {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: #fbbf24;
+        width: 90px;
+      }
+
+      .col-date {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        width: 120px;
+      }
+
+      .col-tokens {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        width: 110px;
+      }
+
+      .col-actions {
+        width: 180px;
+      }
+
+      .table-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .btn-icon-sm {
+        padding: 6px 10px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        color: var(--text-muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--transition);
+        white-space: nowrap;
+      }
+
+      .btn-icon-sm:hover {
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+      }
+
+      .btn-icon-sm.btn-edit:hover {
+        background: rgba(251, 191, 36, 0.12);
+        border-color: rgba(251, 191, 36, 0.35);
+        color: #fbbf24;
+      }
+
+      .btn-icon-sm.btn-copy:hover {
+        background: var(--accent-dim);
+        border-color: rgba(63, 212, 160, 0.35);
+        color: var(--accent);
+      }
+
+      .btn-icon-sm.btn-delete:hover {
+        background: var(--red-dim);
+        border-color: rgba(240, 108, 108, 0.35);
+        color: var(--red);
+      }
+
+      /* ─── Expanded Row ─── */
+      .table-row-expanded {
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .table-row-expanded td {
+        padding: 0;
+      }
+
+      .expanded-content {
+        padding: 20px;
+        animation: expandIn 250ms ease both;
+      }
+
+      @keyframes expandIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .content-preview {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 14px;
+      }
+
+      .notes-inline {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+      }
+
+      .notes-inline-header {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 10px;
+      }
+
+      .note-inline {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      .note-inline:last-child {
+        margin-bottom: 0;
+      }
+
       /* ─── Responsive ─── */
       @media (max-width: 540px) {
         .wrapper {
@@ -1239,6 +1642,21 @@
         .theme-toggle {
           top: 16px;
           right: 16px;
+        }
+        .view-controls {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+          margin-left: 0;
+        }
+        .search-container {
+          max-width: 100%;
+        }
+        .table-container {
+          overflow-x: auto;
+        }
+        .prompts-table {
+          min-width: 700px;
         }
       }
     </style>
@@ -1336,6 +1754,93 @@
         <div class="counter-badge">
           <span class="dot"></span>
           <span id="promptCount">0 prompts stored</span>
+        </div>
+        <div class="view-controls">
+          <div class="view-toggle">
+            <button
+              class="view-btn active"
+              data-view="cards"
+              onclick="toggleView('cards')"
+              title="Card view"
+              aria-label="Card view"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+              </svg>
+            </button>
+            <button
+              class="view-btn"
+              data-view="table"
+              onclick="toggleView('table')"
+              title="Table view"
+              aria-label="Table view"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="Search prompts..."
+              autocomplete="off"
+              oninput="handleSearch()"
+            />
+            <svg
+              class="search-icon"
+              id="searchIcon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <button
+              class="btn-clear-search"
+              id="clearSearchBtn"
+              onclick="clearSearch()"
+              title="Clear search"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <span class="search-results-count" id="searchResultsCount"></span>
         </div>
       </header>
 
@@ -1579,9 +2084,17 @@
       (function () {
         const STORAGE_KEY = "promptLibrary_v1";
         const THEME_KEY = "promptLibrary_theme";
+        const VIEW_KEY = "promptLibrary_view";
 
         // Edit mode state
         let editingIndex = null;
+
+        // View state
+        let currentView = 'cards';
+        let sortColumn = 'createdAt';
+        let sortDirection = 'desc';
+        let searchQuery = '';
+        let expandedRows = new Set();
 
         /* ══════════════════════════════════════════════════════════════
          * THEME SYSTEM
@@ -1656,6 +2169,191 @@
 
         /* ══════════════════════════════════════════════════════════════
          * END THEME SYSTEM
+         * ══════════════════════════════════════════════════════════════ */
+
+        /* ══════════════════════════════════════════════════════════════
+         * VIEW MANAGEMENT SYSTEM
+         * ══════════════════════════════════════════════════════════════ */
+
+        /**
+         * Loads view preference from localStorage
+         * @returns {string} - View preference: 'cards' or 'table'
+         */
+        function loadViewPreference() {
+          return localStorage.getItem(VIEW_KEY) || 'cards';
+        }
+
+        /**
+         * Saves view preference to localStorage
+         * @param {string} view - View to save
+         */
+        function saveViewPreference(view) {
+          localStorage.setItem(VIEW_KEY, view);
+        }
+
+        /**
+         * Toggles between card and table view
+         * @param {string} view - View to switch to: 'cards' or 'table'
+         */
+        window.toggleView = function (view) {
+          currentView = view;
+          saveViewPreference(view);
+          updateViewButtons();
+          render();
+        };
+
+        /**
+         * Updates the active state of view buttons
+         */
+        function updateViewButtons() {
+          document.querySelectorAll('.view-btn').forEach(btn => {
+            if (btn.dataset.view === currentView) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+        }
+
+        /**
+         * Sorts prompts by column
+         * @param {string} column - Column to sort by
+         */
+        window.sortBy = function (column) {
+          if (sortColumn === column) {
+            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+          } else {
+            sortColumn = column;
+            sortDirection = 'desc';
+          }
+          render();
+        };
+
+        /**
+         * Sorts prompts array
+         * @param {Array} prompts - Array of prompts
+         * @param {string} column - Column to sort by
+         * @param {string} direction - Sort direction: 'asc' or 'desc'
+         * @returns {Array} - Sorted prompts
+         */
+        function sortPrompts(prompts, column, direction) {
+          return [...prompts].sort((a, b) => {
+            let aVal, bVal;
+
+            switch (column) {
+              case 'title':
+                aVal = a.title.toLowerCase();
+                bVal = b.title.toLowerCase();
+                break;
+              case 'rating':
+                aVal = a.rating || 0;
+                bVal = b.rating || 0;
+                break;
+              case 'model':
+                aVal = a.metadata?.model || '';
+                bVal = b.metadata?.model || '';
+                break;
+              case 'createdAt':
+                aVal = a.metadata?.createdAt
+                  ? new Date(a.metadata.createdAt).getTime()
+                  : a.createdAt;
+                bVal = b.metadata?.createdAt
+                  ? new Date(b.metadata.createdAt).getTime()
+                  : b.createdAt;
+                break;
+              default:
+                return 0;
+            }
+
+            if (direction === 'asc') {
+              return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+            } else {
+              return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+            }
+          });
+        }
+
+        /**
+         * Gets sort icon for column
+         * @param {string} column - Column name
+         * @returns {string} - HTML for sort icon
+         */
+        function getSortIcon(column) {
+          if (sortColumn !== column) {
+            return '<span class="sort-icon">↕</span>';
+          }
+          return sortDirection === 'asc'
+            ? '<span class="sort-icon active">↑</span>'
+            : '<span class="sort-icon active">↓</span>';
+        }
+
+        /**
+         * Filters prompts by search query
+         * @param {Array} prompts - Array of prompts
+         * @param {string} query - Search query
+         * @returns {Array} - Filtered prompts
+         */
+        function filterPrompts(prompts, query) {
+          if (!query) return prompts;
+          const lowerQuery = query.toLowerCase();
+          return prompts.filter(
+            (p) =>
+              p.title.toLowerCase().includes(lowerQuery) ||
+              p.content.toLowerCase().includes(lowerQuery) ||
+              (p.metadata?.model || '').toLowerCase().includes(lowerQuery)
+          );
+        }
+
+        /**
+         * Handles search input
+         */
+        window.handleSearch = function () {
+          const input = document.getElementById('searchInput');
+          searchQuery = input.value.trim();
+          
+          const clearBtn = document.getElementById('clearSearchBtn');
+          if (searchQuery) {
+            clearBtn.classList.add('show');
+          } else {
+            clearBtn.classList.remove('show');
+          }
+          
+          render();
+        };
+
+        /**
+         * Clears search
+         */
+        window.clearSearch = function () {
+          document.getElementById('searchInput').value = '';
+          searchQuery = '';
+          document.getElementById('clearSearchBtn').classList.remove('show');
+          render();
+        };
+
+        /**
+         * Toggles row expansion in table view
+         * @param {number} index - Prompt index
+         */
+        window.toggleRowExpand = function (index) {
+          const expandedRow = document.getElementById(`expanded-${index}`);
+          const expandBtn = document.querySelector(
+            `[onclick="toggleRowExpand(${index})"]`
+          );
+
+          if (expandedRows.has(index)) {
+            expandedRows.delete(index);
+            expandedRow.style.display = 'none';
+            if (expandBtn) expandBtn.classList.remove('expanded');
+          } else {
+            expandedRows.add(index);
+            expandedRow.style.display = 'table-row';
+            if (expandBtn) expandBtn.classList.add('expanded');
+          }
+        };
+
+        /* ══════════════════════════════════════════════════════════════
+         * END VIEW MANAGEMENT SYSTEM
          * ══════════════════════════════════════════════════════════════ */
 
         /* ══════════════════════════════════════════════════════════════
@@ -2110,13 +2808,26 @@
         function render() {
           const prompts = load();
           const container = document.getElementById("promptsContainer");
+          
+          // Update prompt count
           document.getElementById("promptCount").textContent =
             prompts.length +
             " prompt" +
             (prompts.length !== 1 ? "s" : "") +
             " stored";
 
-          if (prompts.length === 0) {
+          // Apply search filter
+          const filteredPrompts = filterPrompts(prompts, searchQuery);
+          
+          // Update search results count
+          const resultsCount = document.getElementById('searchResultsCount');
+          if (searchQuery && filteredPrompts.length !== prompts.length) {
+            resultsCount.textContent = `Showing ${filteredPrompts.length} of ${prompts.length}`;
+          } else {
+            resultsCount.textContent = '';
+          }
+
+          if (filteredPrompts.length === 0) {
             container.innerHTML = `
         <div class="empty-state">
           <div class="empty-icon">
@@ -2124,13 +2835,25 @@
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
           </div>
-          <p>No prompts yet — create your first one above.</p>
+          <p>${searchQuery ? 'No prompts match your search.' : 'No prompts yet — create your first one above.'}</p>
         </div>`;
             return;
           }
 
-          // Sort by createdAt descending (newest first)
-          const sortedPrompts = [...prompts].sort((a, b) => {
+          // Render based on current view
+          if (currentView === 'table') {
+            renderTableView(filteredPrompts, prompts);
+          } else {
+            renderCardsView(filteredPrompts, prompts);
+          }
+        }
+
+        /* ── render cards view ── */
+        function renderCardsView(filteredPrompts, allPrompts) {
+          const container = document.getElementById("promptsContainer");
+          
+          // Sort by createdAt descending (newest first) for cards
+          const sortedPrompts = [...filteredPrompts].sort((a, b) => {
             const aTime = a.metadata?.createdAt
               ? new Date(a.metadata.createdAt).getTime()
               : a.createdAt;
@@ -2164,7 +2887,7 @@
                   (star) =>
                     `<button class="star-btn ${
                       star <= (p.rating || 0) ? "filled" : ""
-                    }" onclick="setRating(${prompts.indexOf(
+                    }" onclick="setRating(${allPrompts.indexOf(
                       p
                     )}, ${star})" title="${star} star${
                       star !== 1 ? "s" : ""
@@ -2173,25 +2896,25 @@
                 .join("")}
             </div>
           </div>
-          ${renderNotes(p, prompts.indexOf(p))}
+          ${renderNotes(p, allPrompts.indexOf(p))}
           <div class="card-footer">
             <span class="card-date">${formatDate(p.createdAt)}</span>
             <div class="card-actions">
-              <button class="btn-icon btn-edit" onclick="editPrompt(${prompts.indexOf(
+              <button class="btn-icon btn-edit" onclick="editPrompt(${allPrompts.indexOf(
                 p
               )})" title="Edit prompt" tabindex="0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
               </button>
-              <button class="btn-icon btn-copy" onclick="copyPrompt(${prompts.indexOf(
+              <button class="btn-icon btn-copy" onclick="copyPrompt(${allPrompts.indexOf(
                 p
               )})" title="Copy prompt" tabindex="0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
                 </svg>
               </button>
-              <button class="btn-icon btn-delete" onclick="deletePrompt(${prompts.indexOf(
+              <button class="btn-icon btn-delete" onclick="deletePrompt(${allPrompts.indexOf(
                 p
               )})" title="Delete prompt" tabindex="0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2205,6 +2928,126 @@
               )
               .join("") +
             "</div>";
+        }
+
+        /* ── render table view ── */
+        function renderTableView(filteredPrompts, allPrompts) {
+          const container = document.getElementById("promptsContainer");
+          const sorted = sortPrompts(filteredPrompts, sortColumn, sortDirection);
+
+          container.innerHTML = `
+      <div class="table-container">
+        <table class="prompts-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">#</th>
+              <th onclick="sortBy('title')" style="cursor: pointer;">Title ${getSortIcon('title')}</th>
+              <th onclick="sortBy('model')" style="cursor: pointer; width: 140px;">Model ${getSortIcon('model')}</th>
+              <th onclick="sortBy('rating')" style="cursor: pointer; width: 90px;">Rating ${getSortIcon('rating')}</th>
+              <th onclick="sortBy('createdAt')" style="cursor: pointer; width: 120px;">Date ${getSortIcon('createdAt')}</th>
+              <th style="width: 110px;">Tokens</th>
+              <th style="width: 180px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map((p) => renderTableRow(p, allPrompts.indexOf(p))).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+        }
+
+        /* ── render table row ── */
+        function renderTableRow(prompt, index) {
+          const tokens = prompt.metadata?.tokenEstimate
+            ? `${prompt.metadata.tokenEstimate.min.toLocaleString()}–${prompt.metadata.tokenEstimate.max.toLocaleString()}`
+            : '—';
+
+          const isExpanded = expandedRows.has(index);
+
+          return `
+      <tr class="table-row" data-prompt-index="${index}">
+        <td class="col-index">#${String(index + 1).padStart(2, '0')}</td>
+        <td class="col-title">
+          <div class="title-cell">
+            <span class="title-text">${escapeHtml(prompt.title)}</span>
+            <button class="btn-expand ${isExpanded ? 'expanded' : ''}" onclick="toggleRowExpand(${index})" title="Expand details">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+          </div>
+        </td>
+        <td class="col-model">${prompt.metadata?.model ? escapeHtml(prompt.metadata.model) : '—'}</td>
+        <td class="col-rating">${prompt.rating > 0 ? '★ ' + prompt.rating + '.0' : '—'}</td>
+        <td class="col-date">${formatDate(prompt.createdAt)}</td>
+        <td class="col-tokens">${tokens}</td>
+        <td class="col-actions">
+          <div class="table-actions">
+            <button class="btn-icon-sm btn-edit" onclick="editPrompt(${index})" title="Edit prompt">Edit</button>
+            <button class="btn-icon-sm btn-copy" onclick="copyPrompt(${index})" title="Copy prompt">Copy</button>
+            <button class="btn-icon-sm btn-delete" onclick="deletePrompt(${index})" title="Delete prompt">Delete</button>
+          </div>
+        </td>
+      </tr>
+      <tr class="table-row-expanded" id="expanded-${index}" style="display: ${isExpanded ? 'table-row' : 'none'};">
+        <td colspan="7">
+          <div class="expanded-content">
+            <div class="content-preview">${escapeHtml(prompt.content)}</div>
+            ${renderNotesInline(prompt)}
+            ${renderMetadataInline(prompt)}
+          </div>
+        </td>
+      </tr>
+    `;
+        }
+
+        /* ── render notes inline (for table expanded view) ── */
+        function renderNotesInline(prompt) {
+          const notes = prompt.notes || [];
+          if (notes.length === 0) return '';
+
+          return `
+      <div class="notes-inline">
+        <div class="notes-inline-header">Notes (${notes.length})</div>
+        ${notes.map(note => `
+          <div class="note-inline">
+            ${escapeHtml(note.content)}
+            <div style="margin-top: 6px; font-size: 0.65rem; color: var(--text-muted);">
+              ${formatTimestamp(note.lastEdited)}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+        }
+
+        /* ── render metadata inline (for table expanded view) ── */
+        function renderMetadataInline(prompt) {
+          if (!prompt.metadata) return '';
+
+          const meta = prompt.metadata;
+          return `
+      <div class="notes-inline" style="margin-top: 14px;">
+        <div class="notes-inline-header">Metadata</div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">
+          <div>
+            <span style="color: var(--text-muted);">Created:</span>
+            <span style="color: var(--text-secondary); margin-left: 8px;">${formatMetadataDate(meta.createdAt)}</span>
+          </div>
+          ${meta.updatedAt !== meta.createdAt ? `
+          <div>
+            <span style="color: var(--text-muted);">Updated:</span>
+            <span style="color: var(--text-secondary); margin-left: 8px;">${formatMetadataDate(meta.updatedAt)}</span>
+          </div>
+          ` : ''}
+          <div>
+            <span style="color: var(--text-muted);">Confidence:</span>
+            <span class="confidence-badge confidence-${meta.tokenEstimate.confidence}" style="margin-left: 8px;">${meta.tokenEstimate.confidence}</span>
+          </div>
+        </div>
+      </div>
+    `;
         }
 
         /* ── render metadata section ── */
@@ -2942,6 +3785,8 @@
 
         /* ── init ── */
         initTheme();
+        currentView = loadViewPreference();
+        updateViewButtons();
         render();
       })();
     </script>
