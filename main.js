@@ -1479,16 +1479,25 @@
     const saveBtn = document.getElementById("saveBtn");
     const saveBtnText = document.getElementById("saveBtnText");
 
-    formCard.classList.remove("editing");
-    banner.style.display = "none";
-    saveBtn.classList.remove("update-mode");
-
-    // Reset button icon and text
-    saveBtn.querySelector("svg").innerHTML = `
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <line x1="5" y1="12" x2="19" y2="12" />
-    `;
-    saveBtnText.textContent = "Save Prompt";
+    if (formCard) {
+      formCard.classList.remove("editing");
+    }
+    if (banner) {
+      banner.style.display = "none";
+    }
+    if (saveBtn) {
+      saveBtn.classList.remove("update-mode");
+      const svg = saveBtn.querySelector("svg");
+      if (svg) {
+        svg.innerHTML = `
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        `;
+      }
+    }
+    if (saveBtnText) {
+      saveBtnText.textContent = "Save Prompt";
+    }
 
     editingIndex = null;
   }
