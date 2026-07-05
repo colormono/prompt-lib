@@ -23,6 +23,10 @@ npm run check    # type-check with svelte-check + tsc
 
 The `prototype/` folder holds the original static HTML/CSS/JS prototype, kept for reference. It is not part of the Vite app and is not imported by `src/`.
 
+### Design system style guide
+
+While the dev server is running, visit `/#style-guide` to see every design token and UI primitive (`Button`, `Input`, `Textarea`, `Select`, `Checkbox`, `Card`, `Badge`, `Modal`) in both light and dark themes. It's an internal reference, not part of the shipped app flow.
+
 ---
 
 ## Overview
