@@ -27,29 +27,23 @@ tagging, and filtering foundation.**
 - Per-type fields shown/hidden based on asset type.
 - Validation on create/edit.
 
-## Phase 3 — Search foundation (part B)
+## Phase 3 — Search, filtering & favorites ✅ Done
 
 - Full-text search across titles, descriptions, bodies, tags, model names.
 - Pure, tested `search.ts` functions.
-
-## Phase 4 — Filtering & tags (part B)
-
 - Filter by type with live counts.
 - Free-form tagging on assets.
 - Filter by one or more tags.
-
-## Phase 5 — Favorites
-
 - Toggle favorite on an asset.
 - Filter to show only starred assets.
 
-## Phase 6 — Portability
+## Phase 4 — Portability
 
 - Export the whole library to JSON.
 - Import a library from JSON (with a resolve/merge step).
 - Reset to a starter library.
 
-## Phase 7 — Quality & maintenance
+## Phase 5 — Quality & maintenance
 
 - Status per asset (draft / tested / retired).
 - Usage count + last-used timestamp.

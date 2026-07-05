@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { toggleFavorite } from "../lib/stores";
   import type { Asset, AssetType } from "../lib/types";
   import Badge from "./ui/Badge.svelte";
   import Button from "./ui/Button.svelte";
@@ -37,6 +38,18 @@
         {TYPE_LABELS[asset.type]}
       </Badge>
       <div class="asset-card__actions">
+        <button
+          type="button"
+          class="asset-card__favorite"
+          class:asset-card__favorite--active={asset.favorite}
+          aria-pressed={asset.favorite}
+          aria-label={asset.favorite
+            ? "Remove from favorites"
+            : "Add to favorites"}
+          onclick={() => toggleFavorite(asset.id)}
+        >
+          {asset.favorite ? "★" : "☆"}
+        </button>
         <Button variant="ghost" size="sm" onclick={() => onEdit(asset)}>
           Edit
         </Button>
@@ -75,7 +88,36 @@
 
   .asset-card__actions {
     display: flex;
+    align-items: center;
     gap: var(--space-1);
+  }
+
+  .asset-card__favorite {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-md);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+
+  .asset-card__favorite:hover {
+    background-color: var(--color-bg-subtle);
+  }
+
+  .asset-card__favorite:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .asset-card__favorite--active {
+    color: var(--color-warning);
   }
 
   .asset-card__title {

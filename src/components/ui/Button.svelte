@@ -1,14 +1,12 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import type { HTMLButtonAttributes } from "svelte/elements";
 
-  interface Props {
+  interface Props extends HTMLButtonAttributes {
     variant?: "primary" | "secondary" | "ghost" | "danger";
     size?: "sm" | "md" | "lg";
-    type?: "button" | "submit" | "reset";
-    disabled?: boolean;
     icon?: Snippet;
     children: Snippet;
-    onclick?: (event: MouseEvent) => void;
   }
 
   let {

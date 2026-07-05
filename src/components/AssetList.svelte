@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { library } from "../lib/stores";
+  import { clearFilters, library, visibleAssets } from "../lib/stores";
   import type { Asset } from "../lib/types";
   import AssetCard from "./AssetCard.svelte";
+  import FilterBar from "./FilterBar.svelte";
   import Button from "./ui/Button.svelte";
 
   interface Props {
@@ -13,8 +14,9 @@
   let { onCreate, onEdit, onDelete }: Props = $props();
 
   let assets = $derived(
-    [...$library].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+    [...$visibleAssets].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
   );
+  const libraryIsEmpty = $derived($library.length === 0);
 </script>
 
 <section class="asset-list">
@@ -23,10 +25,21 @@
     <Button onclick={onCreate}>New asset</Button>
   </div>
 
-  {#if assets.length === 0}
+  {#if !libraryIsEmpty}
+    <FilterBar />
+  {/if}
+
+  {#if libraryIsEmpty}
     <div class="asset-list__empty">
       <p>Your library is empty.</p>
       <Button onclick={onCreate}>Create your first asset</Button>
+    </div>
+  {:else if assets.length === 0}
+    <div class="asset-list__empty">
+      <p>No assets match your filters.</p>
+      <Button variant="secondary" onclick={clearFilters}>
+        Clear filters
+      </Button>
     </div>
   {:else}
     <div class="asset-list__grid">

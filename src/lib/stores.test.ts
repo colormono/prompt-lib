@@ -110,4 +110,120 @@ describe("stores", () => {
 
     expect(get(library)).toEqual([]);
   });
+
+  it("toggleFavorite flips the flag and bumps updatedAt", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
+    const { library, addAsset, toggleFavorite } = await freshStores();
+    const created = addAsset(makePromptDraft());
+
+    vi.setSystemTime(new Date("2026-01-02T00:00:00.000Z"));
+    toggleFavorite(created.id);
+    vi.useRealTimers();
+
+    const toggled = get(library)[0];
+    expect(toggled.favorite).toBe(true);
+    expect(toggled.updatedAt).not.toBe(created.updatedAt);
+  });
+
+  describe("filters", () => {
+    it("visibleAssets narrows by search query", async () => {
+      const { visibleAssets, addAsset, setSearchQuery } = await freshStores();
+      addAsset(
+        makePromptDraft({
+          title: "Summarize doc",
+          description: "",
+          prompt: "Condense a document",
+        }),
+      );
+      addAsset(
+        makePromptDraft({
+          title: "Draft email",
+          description: "",
+          prompt: "Write a polite email",
+        }),
+      );
+
+      setSearchQuery("summarize");
+
+      expect(get(visibleAssets)).toHaveLength(1);
+      expect(get(visibleAssets)[0].title).toBe("Summarize doc");
+    });
+
+    it("visibleAssets narrows by type", async () => {
+      const { visibleAssets, addAsset, setActiveType } = await freshStores();
+      addAsset(makePromptDraft());
+      addAsset(makeStoredTool());
+
+      setActiveType("tool");
+
+      expect(get(visibleAssets)).toHaveLength(1);
+      expect(get(visibleAssets)[0].type).toBe("tool");
+    });
+
+    it("visibleAssets requires all active roles (AND)", async () => {
+      const { visibleAssets, addAsset, toggleActiveRole } = await freshStores();
+      addAsset(makePromptDraft({ roles: ["pm"] }));
+      addAsset(makePromptDraft({ roles: ["pm", "design"], title: "Second" }));
+
+      toggleActiveRole("pm");
+      toggleActiveRole("design");
+
+      expect(get(visibleAssets)).toHaveLength(1);
+      expect(get(visibleAssets)[0].title).toBe("Second");
+    });
+
+    it("visibleAssets matches any active category (OR)", async () => {
+      const { visibleAssets, addAsset, toggleActiveCategory } =
+        await freshStores();
+      addAsset(makePromptDraft({ category: "writing" }));
+      addAsset(makePromptDraft({ category: "design", title: "Second" }));
+      addAsset(makePromptDraft({ category: "people", title: "Third" }));
+
+      toggleActiveCategory("writing");
+      toggleActiveCategory("design");
+
+      expect(get(visibleAssets).map((asset) => asset.title)).toEqual([
+        "Summarize doc",
+        "Second",
+      ]);
+    });
+
+    it("visibleAssets narrows to favorites only", async () => {
+      const { visibleAssets, addAsset, toggleFavorite, setFavoritesOnly } =
+        await freshStores();
+      const created = addAsset(makePromptDraft());
+      addAsset(makePromptDraft({ title: "Not favorited" }));
+      toggleFavorite(created.id);
+
+      setFavoritesOnly(true);
+
+      expect(get(visibleAssets)).toHaveLength(1);
+      expect(get(visibleAssets)[0].id).toBe(created.id);
+    });
+
+    it("clearFilters resets every filter dimension", async () => {
+      const {
+        visibleAssets,
+        addAsset,
+        setSearchQuery,
+        setActiveType,
+        toggleActiveRole,
+        toggleActiveCategory,
+        setFavoritesOnly,
+        clearFilters,
+      } = await freshStores();
+      addAsset(makePromptDraft());
+      addAsset(makeStoredTool());
+
+      setSearchQuery("nope");
+      setActiveType("tool");
+      toggleActiveRole("pm");
+      toggleActiveCategory("design");
+      setFavoritesOnly(true);
+      clearFilters();
+
+      expect(get(visibleAssets)).toHaveLength(2);
+    });
+  });
 });
