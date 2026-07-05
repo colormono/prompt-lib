@@ -1,5 +1,10 @@
 <script lang="ts">
+  import AssetForm from "./components/AssetForm.svelte";
+  import AssetList from "./components/AssetList.svelte";
+  import ConfirmDeleteModal from "./components/ConfirmDeleteModal.svelte";
   import StyleGuide from "./components/dev/StyleGuide.svelte";
+  import { addAsset, deleteAsset, updateAsset } from "./lib/stores";
+  import type { Asset, AssetDraft } from "./lib/types";
 
   const appTitle = "Colormo AI Prompt Manager";
 
@@ -14,15 +19,66 @@
   });
 
   const showStyleGuide = $derived(hash === "#style-guide");
+
+  let formOpen = $state(false);
+  let editingAsset = $state<Asset | undefined>(undefined);
+  let deleteOpen = $state(false);
+  let deletingAsset = $state<Asset | undefined>(undefined);
+
+  function openCreateForm() {
+    editingAsset = undefined;
+    formOpen = true;
+  }
+
+  function openEditForm(asset: Asset) {
+    editingAsset = asset;
+    formOpen = true;
+  }
+
+  function handleFormSubmit(draft: AssetDraft) {
+    if (editingAsset) {
+      updateAsset(editingAsset.id, draft);
+    } else {
+      addAsset(draft);
+    }
+  }
+
+  function openDeleteConfirm(asset: Asset) {
+    deletingAsset = asset;
+    deleteOpen = true;
+  }
+
+  function handleDeleteConfirm(asset: Asset) {
+    deleteAsset(asset.id);
+  }
 </script>
 
 {#if showStyleGuide}
   <StyleGuide />
 {:else}
   <main>
-    <h1>{appTitle}</h1>
-    <p data-testid="scaffold-marker">scaffold ready</p>
-    <a class="dev-link" href="#style-guide">Design system style guide →</a>
+    <header class="app-header">
+      <h1>{appTitle}</h1>
+      <a class="dev-link" href="#style-guide">Design system style guide →</a>
+    </header>
+
+    <AssetList
+      onCreate={openCreateForm}
+      onEdit={openEditForm}
+      onDelete={openDeleteConfirm}
+    />
+
+    <AssetForm
+      bind:open={formOpen}
+      asset={editingAsset}
+      onSubmit={handleFormSubmit}
+    />
+
+    <ConfirmDeleteModal
+      bind:open={deleteOpen}
+      asset={deletingAsset}
+      onConfirm={handleDeleteConfirm}
+    />
   </main>
 {/if}
 
@@ -30,15 +86,19 @@
   main {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
+  }
+
+  .app-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: var(--space-2);
+    padding: var(--space-6) var(--space-4) 0;
     text-align: center;
   }
 
   .dev-link {
-    margin-top: var(--space-4);
     font-size: var(--font-size-sm);
   }
 </style>

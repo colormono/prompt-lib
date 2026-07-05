@@ -17,7 +17,7 @@ tagging, and filtering foundation.**
 - Build core UI primitives (Button, Input, Card, Badge/Tag, Modal) on the tokens.
 - Do not reuse the prototype's `globals.css`.
 
-## Phase 2 — Data model & core CRUD
+## Phase 2 — Data model & core CRUD ✅ Done
 
 - Define `types.ts`: `BaseAsset` + the four asset shapes.
 - Build `storage.ts`: typed load/save against localStorage.
