@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Library</title>
+    <link rel="stylesheet" href="globals.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="main.js" type="module" defer></script>
+  </head>
+  <body>
+    <!-- ─── Theme Toggle ─── -->
+    <div class="theme-toggle">
+      <button
+        class="theme-btn"
+        data-theme="light"
+        onclick="setTheme('light')"
+        title="Light mode"
+        aria-label="Light mode"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+      </button>
+      <button
+        class="theme-btn"
+        data-theme="dark"
+        onclick="setTheme('dark')"
+        title="Dark mode"
+        aria-label="Dark mode"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </button>
+      <button
+        class="theme-btn"
+        data-theme="system"
+        onclick="setTheme('system')"
+        title="System preference"
+        aria-label="System preference"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- ─── App ─── -->
+    <div class="wrapper">
+      <!-- Toolbar -->
+      <header class="toolbar">
+        <div class="toolbar-left">
+          <div class="logo-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+          </div>
+          <h1><span>prompt</span>_library</h1>
+          <div class="counter-badge">
+            <span class="dot"></span>
+            <span id="promptCount">0 prompts stored</span>
+          </div>
+        </div>
+
+        <div class="toolbar-center">
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="Search prompts..."
+              autocomplete="off"
+              oninput="handleSearch()"
+            />
+            <svg
+              class="search-icon"
+              id="searchIcon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <button
+              class="btn-clear-search"
+              id="clearSearchBtn"
+              onclick="clearSearch()"
+              title="Clear search"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <span class="search-results-count" id="searchResultsCount"></span>
+        </div>
+
+        <div class="toolbar-right">
+          <div class="view-toggle">
+            <button
+              class="view-btn active"
+              data-view="cards"
+              onclick="toggleView('cards')"
+              title="Card view"
+              aria-label="Card view"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+              </svg>
+            </button>
+            <button
+              class="view-btn"
+              data-view="table"
+              onclick="toggleView('table')"
+              title="Table view"
+              aria-label="Table view"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <button class="btn-export" onclick="exportBackup()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export
+          </button>
+          <button
+            class="btn-import"
+            onclick="document.getElementById('fileInput').click()"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Import
+          </button>
+          <button class="btn-new-prompt" onclick="openCreateModal()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            New Prompt
+          </button>
+        </div>
+      </header>
+
+      <!-- Saved Prompts -->
+      <div class="prompts-container" id="promptsContainer"></div>
+
+      <!-- Hidden file input for import -->
+      <input
+        type="file"
+        id="fileInput"
+        accept=".json"
+        style="display: none"
+        onchange="handleFileSelect(event)"
+      />
+
+      <!-- Drop zone for drag & drop import -->
+      <div class="drop-zone" id="dropZone" style="display: none">
+        <div class="drop-zone-content">
+          <svg
+            class="drop-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          <p class="drop-title">Drop your backup file here</p>
+          <p class="drop-subtitle">or click "Import" to browse</p>
+        </div>
+        <div class="drop-zone-loading" id="dropLoading" style="display: none">
+          <div class="spinner"></div>
+          <p>Processing backup...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Prompt Create/Edit/View -->
+    <div class="modal-overlay" id="promptModal">
+      <div class="modal modal-form">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modalTitle">New Prompt</h3>
+          <button
+            class="btn-close-modal"
+            onclick="closeModal()"
+            aria-label="Close dialog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-body" id="modalBody">
+          <!-- Form content (create/edit mode) -->
+          <div id="modalFormContent" style="display: none">
+            <div class="form-row">
+              <label for="promptTitle">Title</label>
+              <input
+                type="text"
+                id="promptTitle"
+                placeholder="e.g. Code review helper"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-row">
+              <label for="promptContent">Prompt</label>
+              <textarea
+                id="promptContent"
+                placeholder="Write your prompt here…"
+              ></textarea>
+            </div>
+            <div class="form-row-inline">
+              <div class="form-row">
+                <label for="promptModel">Model (Optional)</label>
+                <input
+                  type="text"
+                  id="promptModel"
+                  placeholder="e.g. gpt-4, claude-3"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-row">
+                <label for="promptType">Content Type</label>
+                <select
+                  id="promptType"
+                  style="
+                    width: 100%;
+                    background: var(--bg-input);
+                    border: 1px solid var(--border);
+                    border-radius: var(--radius);
+                    color: var(--text-primary);
+                    font-family: 'Sora', sans-serif;
+                    font-size: 0.9rem;
+                    padding: 11px 14px;
+                    outline: none;
+                    transition: border-color var(--transition),
+                      box-shadow var(--transition);
+                    cursor: pointer;
+                  "
+                >
+                  <option value="text">Text</option>
+                  <option value="code">Code</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- View content (view mode) -->
+          <div id="modalViewContent" style="display: none">
+            <!-- Content will be dynamically rendered -->
+          </div>
+        </div>
+
+        <div class="modal-footer" id="modalFooter">
+          <!-- Dynamic buttons based on mode -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Conflict Resolution -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <h3 class="modal-title">Import Conflict</h3>
+        </div>
+        <div class="modal-body">
+          <p>
+            You already have prompts saved. How would you like to handle the
+            imported backup?
+          </p>
+          <div class="modal-info">
+            <strong>Current:</strong>
+            <span id="modalCurrentCount">0</span> prompts<br />
+            <strong>Import:</strong>
+            <span id="modalImportCount">0</span> prompts
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button
+            class="modal-btn modal-btn-secondary"
+            onclick="resolveImport('merge')"
+          >
+            Merge (Keep Both)
+          </button>
+          <button
+            class="modal-btn modal-btn-primary"
+            onclick="resolveImport('overwrite')"
+          >
+            Overwrite (Replace)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+  </body>
+</html>
