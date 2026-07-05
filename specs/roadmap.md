@@ -9,7 +9,7 @@ tagging, and filtering foundation.**
 - Initialize Svelte + TypeScript + Vite project.
 - Add Vitest and a lint/format setup.
 
-## Phase 0.5 — Design system from scratch
+## Phase 1 — Design system ✅ Done
 
 - Define design tokens in `styles/tokens.css` (color, type, spacing, radii,
   shadows) with light/dark themes.
@@ -17,14 +17,11 @@ tagging, and filtering foundation.**
 - Build core UI primitives (Button, Input, Card, Badge/Tag, Modal) on the tokens.
 - Do not reuse the prototype's `globals.css`.
 
-## Phase 1 — Data model & storage
+## Phase 2 — Data model & core CRUD
 
 - Define `types.ts`: `BaseAsset` + the four asset shapes.
 - Build `storage.ts`: typed load/save against localStorage.
 - Add `stores.ts`: reactive Svelte store backed by storage.
-
-## Phase 2 — Core CRUD (asset A)
-
 - List assets as cards.
 - Create, edit, and delete an asset via a typed form.
 - Per-type fields shown/hidden based on asset type.
