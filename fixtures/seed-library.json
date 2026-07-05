@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "exportedAt": "2026-02-14T09:30:00.000Z",
+  "assets": [
+    {
+      "id": "seed-prompt-1",
+      "type": "prompt",
+      "title": "Draft a release announcement",
+      "description": "Turns a changelog into a short, friendly release note.",
+      "category": "writing",
+      "roles": ["pm", "writer"],
+      "sdlcStage": "ship",
+      "favorite": false,
+      "order": 0,
+      "createdAt": "2026-02-01T00:00:00.000Z",
+      "updatedAt": "2026-02-01T00:00:00.000Z",
+      "prompt": "Turn {changelog} into a short release announcement for {audience}.",
+      "model": "gpt-4",
+      "slots": { "changelog": "@CHANGELOG.md", "audience": "customers" }
+    },
+    {
+      "id": "seed-skill-1",
+      "type": "skill",
+      "title": "Triage a bug report",
+      "description": "Classifies severity and asks for missing repro info.",
+      "category": "engineering",
+      "roles": ["engineer"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 1,
+      "createdAt": "2026-02-01T00:00:00.000Z",
+      "updatedAt": "2026-02-01T00:00:00.000Z",
+      "body": "Read the bug report, assign a severity, and list any missing information needed to reproduce it."
+    },
+    {
+      "id": "starter-tool-1",
+      "type": "tool",
+      "title": "Figma (imported copy)",
+      "description": "Design and prototyping tool, re-imported from another machine.",
+      "category": "design",
+      "roles": ["design"],
+      "sdlcStage": "design",
+      "favorite": true,
+      "order": 2,
+      "createdAt": "2026-02-01T00:00:00.000Z",
+      "updatedAt": "2026-02-10T00:00:00.000Z",
+      "url": "https://figma.com"
+    },
+    {
+      "id": "seed-resource-1",
+      "type": "resource",
+      "title": "A Philosophy of Software Design",
+      "description": "Reference on managing complexity in software design.",
+      "category": "engineering",
+      "roles": ["engineer"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 3,
+      "createdAt": "2026-02-01T00:00:00.000Z",
+      "updatedAt": "2026-02-01T00:00:00.000Z",
+      "url": "https://web.stanford.edu/~ouster/cgi-bin/book.php",
+      "resourceType": "doc"
+    }
+  ]
+}

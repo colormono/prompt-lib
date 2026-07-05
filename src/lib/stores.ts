@@ -1,4 +1,6 @@
 import { derived, get, writable } from "svelte/store";
+import type { LibraryExport } from "./portability";
+import { buildExport } from "./portability";
 import {
   countByType,
   distinctCategories,
@@ -6,6 +8,7 @@ import {
   EMPTY_FILTERS,
   filterAssets,
 } from "./search";
+import { STARTER_LIBRARY } from "./starterLibrary";
 import { loadLibrary, saveLibrary } from "./storage";
 import type { Asset, AssetDraft, AssetType } from "./types";
 
@@ -61,6 +64,21 @@ export function toggleFavorite(id: string): void {
         : asset,
     ),
   );
+}
+
+/** Snapshots the current library as a `LibraryExport` envelope. */
+export function exportLibrary(): LibraryExport {
+  return buildExport(get(library));
+}
+
+/** Replaces the library with the fully-resolved result of an import. */
+export function importLibrary(assets: Asset[]): void {
+  library.set(assets);
+}
+
+/** Replaces the library with the curated starter set. */
+export function resetToStarterLibrary(): void {
+  library.set(STARTER_LIBRARY);
 }
 
 export const searchQuery = writable<string>(EMPTY_FILTERS.query);

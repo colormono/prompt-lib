@@ -37,7 +37,7 @@ tagging, and filtering foundation.**
 - Toggle favorite on an asset.
 - Filter to show only starred assets.
 
-## Phase 4 — Portability
+## Phase 4 — Portability ✅ Done
 
 - Export the whole library to JSON.
 - Import a library from JSON (with a resolve/merge step).

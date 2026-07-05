@@ -2,7 +2,7 @@ import type { Asset } from "./types";
 
 const STORAGE_KEY = "prompt-lib:assets";
 
-function isAssetShape(value: unknown): value is Asset {
+export function isAssetShape(value: unknown): value is Asset {
   if (typeof value !== "object" || value === null) return false;
   const candidate = value as Record<string, unknown>;
   return (
