@@ -126,6 +126,41 @@ describe("stores", () => {
     expect(toggled.updatedAt).not.toBe(created.updatedAt);
   });
 
+  describe("portability", () => {
+    it("exportLibrary reflects the current library", async () => {
+      const { addAsset, exportLibrary } = await freshStores();
+      const created = addAsset(makePromptDraft());
+
+      const exported = exportLibrary();
+
+      expect(exported.version).toBe(1);
+      expect(exported.assets).toEqual([created]);
+    });
+
+    it("importLibrary replaces and persists the library", async () => {
+      const { library, importLibrary } = await freshStores();
+      const incoming = [makeStoredTool()];
+
+      importLibrary(incoming);
+
+      expect(get(library)).toEqual(incoming);
+      const { loadLibrary } = await import("./storage");
+      expect(loadLibrary()).toEqual(incoming);
+    });
+
+    it("resetToStarterLibrary replaces and persists the starter set", async () => {
+      const { library, addAsset, resetToStarterLibrary } = await freshStores();
+      addAsset(makePromptDraft());
+
+      resetToStarterLibrary();
+
+      const { STARTER_LIBRARY } = await import("./starterLibrary");
+      expect(get(library)).toEqual(STARTER_LIBRARY);
+      const { loadLibrary } = await import("./storage");
+      expect(loadLibrary()).toEqual(STARTER_LIBRARY);
+    });
+  });
+
   describe("filters", () => {
     it("visibleAssets narrows by search query", async () => {
       const { visibleAssets, addAsset, setSearchQuery } = await freshStores();

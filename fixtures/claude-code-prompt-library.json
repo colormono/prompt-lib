@@ -1,0 +1,960 @@
+{
+  "version": 1,
+  "exportedAt": "2026-07-05T22:09:09.105Z",
+  "assets": [
+    {
+      "id": "get-oriented-in-a",
+      "type": "prompt",
+      "title": "Get oriented in a new repository",
+      "description": "Describe what you want to know, not which files to read. Claude explores the project on its own and returns a summary of how it fits together.",
+      "category": "understand",
+      "roles": [],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 0,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "give me an overview of this codebase: architecture, key directories, and how the pieces connect",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "explain-unfamiliar-code",
+      "type": "prompt",
+      "title": "Explain unfamiliar code",
+      "description": "Name the file and say what format you want the answer in. Swap the HTML page for a diagram, bullet points, or whatever fits how you learn.",
+      "category": "understand",
+      "roles": [],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 1,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "explain what {path} does and how data flows through it. write it up as {format}",
+      "model": "Claude Code",
+      "slots": {
+        "path": "src/scheduler/queue.ts",
+        "format": "an HTML page with a diagram, then open it in my browser"
+      }
+    },
+    {
+      "id": "find-where-something-happens",
+      "type": "prompt",
+      "title": "Find where something happens",
+      "description": "Search by behavior instead of by filename. The search works even when you don't know what the file is called or which directory it lives in.",
+      "category": "understand",
+      "roles": [],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 2,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "where do we {behavior}?",
+      "model": "Claude Code",
+      "slots": {
+        "behavior": "validate uploaded file types"
+      }
+    },
+    {
+      "id": "see-what-depends-on",
+      "type": "prompt",
+      "title": "Check what breaks before you delete",
+      "description": "Ask before you remove anything. The list of callers and downstream effects tells you whether you're looking at a one-line cleanup or a change you need to coordinate.",
+      "category": "understand",
+      "roles": [],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 3,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "what would break if I deleted {target}?",
+      "model": "Claude Code",
+      "slots": {
+        "target": "the retryWithBackoff helper"
+      }
+    },
+    {
+      "id": "trace-how-code-evolved",
+      "type": "prompt",
+      "title": "Trace how code evolved",
+      "description": "Point at commit history when the question is why, not what. Claude reads the log and blame for whatever version control you use and explains the decisions behind the current implementation.",
+      "category": "understand",
+      "roles": [],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 4,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "look through the commit history of {path} and summarize how it evolved and why",
+      "model": "Claude Code",
+      "slots": {
+        "path": "internal/auth/session.go"
+      }
+    },
+    {
+      "id": "scope-a-change-before",
+      "type": "prompt",
+      "title": "Scope a change before you start",
+      "description": "Size the work before you commit it to a roadmap. The file list tells you whether you're looking at one component or a cross-cutting change.",
+      "category": "understand",
+      "roles": ["pm", "design"],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 5,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "which files would I need to touch to {change}?",
+      "model": "Claude Code",
+      "slots": {
+        "change": "add a dark mode toggle to settings"
+      }
+    },
+    {
+      "id": "ask-the-codebase-a",
+      "type": "prompt",
+      "title": "Ask the codebase a product question",
+      "description": "State your role so the answer is pitched at the right level. Claude explains what the product actually does from the source code, without you needing to read it.",
+      "category": "understand",
+      "roles": ["pm"],
+      "sdlcStage": "discover",
+      "favorite": false,
+      "order": 6,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "I am a {role}. walk me through what happens when a user {action}, from the UI down to the result",
+      "model": "Claude Code",
+      "slots": {
+        "role": "PM",
+        "action": "clicks Export to PDF"
+      }
+    },
+    {
+      "id": "plan-a-multi-file",
+      "type": "prompt",
+      "title": "Plan a multi-file change before touching code",
+      "description": "Adding \"don't edit yet\" separates exploration from changes, so you see the approach before any code moves. To make plan-first the default on every prompt, press Shift+Tab for plan mode.",
+      "category": "plan",
+      "roles": ["pm", "design"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 7,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "plan how to refactor the {target} to {goal}. list the files you would change, but don't edit anything yet",
+      "model": "Claude Code",
+      "slots": {
+        "target": "payment module",
+        "goal": "support multiple currencies"
+      }
+    },
+    {
+      "id": "draft-a-spec-by",
+      "type": "prompt",
+      "title": "Draft a spec by interview",
+      "description": "Ask to be interviewed instead of writing the spec yourself. Claude asks you structured questions until the requirements are complete, then writes the result to a file.",
+      "category": "plan",
+      "roles": ["pm"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 8,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "I want to build {feature}. interview me about implementation, UX, edge cases, and tradeoffs until we have covered everything, then write the spec to SPEC.md",
+      "model": "Claude Code",
+      "slots": {
+        "feature": "per-workspace rate limits"
+      }
+    },
+    {
+      "id": "turn-a-meeting-into",
+      "type": "prompt",
+      "title": "Turn a meeting into tickets",
+      "description": "Skip the transcription step. Claude pulls action items from the unstructured input and writes them straight into your tracker via MCP, so you review the tickets, not the transcript.",
+      "category": "plan",
+      "roles": ["pm"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 9,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "read {input} and write up the action items, then create a {tracker} ticket for each with acceptance criteria",
+      "model": "Claude Code",
+      "slots": {
+        "input": "@meeting-notes.md",
+        "tracker": "Linear"
+      }
+    },
+    {
+      "id": "map-edge-cases-before",
+      "type": "prompt",
+      "title": "Map edge cases before building",
+      "description": "Ask for what's missing, not what's there. Claude lists the error states, empty states, and edge cases a happy-path design tends to skip.",
+      "category": "plan",
+      "roles": ["design", "pm"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 10,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "list the error states, empty states, and edge cases for {feature} that the design needs to cover",
+      "model": "Claude Code",
+      "slots": {
+        "feature": "the file upload flow"
+      }
+    },
+    {
+      "id": "turn-a-mockup-into",
+      "type": "prompt",
+      "title": "Turn a mockup into a working prototype",
+      "description": "A clickable prototype answers questions a static mockup can't. Hand the working code to engineering instead of explaining the interactions in a doc.",
+      "category": "prototype",
+      "roles": ["design", "pm", "marketing"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 11,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "here is a mockup. build a working prototype I can click through, matching the layout and states shown",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "implement-from-a-screenshot",
+      "type": "prompt",
+      "title": "Implement from a screenshot and self-check",
+      "description": "This gives Claude a verification loop: it renders, compares against the source image, and iterates without you pointing out each gap.",
+      "category": "prototype",
+      "roles": ["design"],
+      "sdlcStage": "design",
+      "favorite": false,
+      "order": 12,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "implement this design, then take a screenshot of the result, compare it to the original, and fix any differences",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "follow-an-existing-pattern",
+      "type": "prompt",
+      "title": "Follow an existing pattern",
+      "description": "Point at code you already like. Without a reference, Claude defaults to general best practices. With one, it matches the conventions your codebase actually uses.",
+      "category": "build",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 13,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "look at how {example} is implemented to understand the pattern, then build {new} the same way",
+      "model": "Claude Code",
+      "slots": {
+        "example": "the GitHub webhook handler",
+        "new": "a Stripe webhook handler"
+      }
+    },
+    {
+      "id": "generate-docs-for-code",
+      "type": "prompt",
+      "title": "Generate docs for undocumented code",
+      "description": "Name the scope and the format. Claude finds what's missing and matches the comment style already in the file, so the new docs read like the rest.",
+      "category": "build",
+      "roles": ["docs"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 14,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "find {scope} without {format} comments and add them, matching the style already used in the file",
+      "model": "Claude Code",
+      "slots": {
+        "scope": "the public functions in src/auth/",
+        "format": "JSDoc"
+      }
+    },
+    {
+      "id": "add-a-small-well",
+      "type": "prompt",
+      "title": "Add a small, well-defined feature",
+      "description": "State the inputs and outputs, not how to build it. Claude finds where similar code lives and adds yours alongside it.",
+      "category": "build",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 15,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "add a {endpoint} endpoint that returns {payload}",
+      "model": "Claude Code",
+      "slots": {
+        "endpoint": "/health",
+        "payload": "the app version and uptime"
+      }
+    },
+    {
+      "id": "build-a-small-internal",
+      "type": "prompt",
+      "title": "Build a small internal tool from scratch",
+      "description": "You don't need a project, a framework, or a build step. Describe the tool and ask Claude to open it so you see it working immediately.",
+      "category": "build",
+      "roles": ["pm", "design", "marketing", "docs"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 16,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "create a {tool} using HTML, CSS, and vanilla JavaScript, then open it in my browser",
+      "model": "Claude Code",
+      "slots": {
+        "tool": "drag-and-drop Kanban board with three columns"
+      }
+    },
+    {
+      "id": "work-an-issue-end",
+      "type": "prompt",
+      "title": "Work an issue end to end",
+      "description": "Give the issue number, not a summary. Claude reads the full ticket itself, so requirements you'd forget to mention come through, and it validates the change before reporting back.",
+      "category": "build",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 17,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "read issue #{issue}, implement the fix, and run the tests",
+      "model": "Claude Code",
+      "slots": {
+        "issue": "312"
+      }
+    },
+    {
+      "id": "find-and-update-copy",
+      "type": "prompt",
+      "title": "Find and update copy across the codebase",
+      "description": "Ask for variants and say what to skip. Claude finds phrasings a literal search would miss and leaves test fixtures and history untouched, so you review only the copy users actually see.",
+      "category": "build",
+      "roles": ["design", "docs", "marketing"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 18,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "find every place we say \"{copy}\" or a close variant, show me each one in context, then update them all to \"{new}\". leave tests and the changelog alone",
+      "model": "Claude Code",
+      "slots": {
+        "copy": "Sign up free",
+        "new": "Start free trial"
+      }
+    },
+    {
+      "id": "draft-from-past-examples",
+      "type": "prompt",
+      "title": "Draft a document from past examples",
+      "description": "Point at a folder of finished work instead of describing your style. Claude learns the structure and voice from what you've already shipped, so the first draft reads like one of yours.",
+      "category": "build",
+      "roles": ["docs", "marketing", "pm"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 19,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "read the {examples} in {folder} to learn the structure and voice, then draft a new one for {topic}",
+      "model": "Claude Code",
+      "slots": {
+        "examples": "privacy impact assessments",
+        "folder": "legal/pia/",
+        "topic": "the new analytics integration"
+      }
+    },
+    {
+      "id": "write-tests-run-them",
+      "type": "prompt",
+      "title": "Write tests, run them, fix failures",
+      "description": "Ask for write, run, and fix together so Claude iterates without stopping for instructions.",
+      "category": "test",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 20,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "write tests for {path}, run them, and fix any failures",
+      "model": "Claude Code",
+      "slots": {
+        "path": "app/parsers/feed.py"
+      }
+    },
+    {
+      "id": "drive-implementation-from-tests",
+      "type": "prompt",
+      "title": "Drive implementation from tests",
+      "description": "Test-driven development: the tests define when the work is complete, and Claude iterates on the implementation until they pass.",
+      "category": "test",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 21,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "write tests for {feature} first, then implement it until they pass",
+      "model": "Claude Code",
+      "slots": {
+        "feature": "the password reset flow"
+      }
+    },
+    {
+      "id": "fill-gaps-from-a",
+      "type": "prompt",
+      "title": "Fill gaps from a coverage report",
+      "description": "Point at the coverage report instead of guessing what's untested. Claude reads the actual numbers and writes tests for the files that need them most.",
+      "category": "test",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 22,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "read {report} and add tests for the lowest-covered files until each is above {target}%",
+      "model": "Claude Code",
+      "slots": {
+        "report": "coverage/coverage-summary.json",
+        "target": "80"
+      }
+    },
+    {
+      "id": "migrate-a-pattern-across",
+      "type": "prompt",
+      "title": "Migrate a pattern across the codebase",
+      "description": "Describe the old pattern and the new one. Asking Claude to identify every place first means the call sites are listed in the response, so you can check none were missed.",
+      "category": "refactor",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 23,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "migrate everything from {from} to {to}: identify every place that needs to change, then make the changes",
+      "model": "Claude Code",
+      "slots": {
+        "from": "the old logging API",
+        "to": "the structured logger"
+      }
+    },
+    {
+      "id": "port-code-between-languages",
+      "type": "prompt",
+      "title": "Port code to another language",
+      "description": "Say what to preserve, not just the target language. Naming the API or behavior that must stay the same gives Claude a contract to check the port against.",
+      "category": "refactor",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 24,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "port {source} to {target}, keeping the same {keep}",
+      "model": "Claude Code",
+      "slots": {
+        "source": "this Python module",
+        "target": "Rust",
+        "keep": "public API and test behavior"
+      }
+    },
+    {
+      "id": "optimize-against-a-measurable",
+      "type": "prompt",
+      "title": "Optimize against a measurable target",
+      "description": "Stating the metric and target gives Claude a clear definition of done.",
+      "category": "refactor",
+      "roles": ["data"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 25,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "optimize {target} to bring {metric} from {current} down to under {goal}",
+      "model": "Claude Code",
+      "slots": {
+        "target": "the search query",
+        "metric": "p95 latency",
+        "current": "2s",
+        "goal": "500ms"
+      }
+    },
+    {
+      "id": "fix-a-precise-visual",
+      "type": "prompt",
+      "title": "Fix a precise visual bug",
+      "description": "Precise visual feedback gets a precise fix. State the exact element, measurement, and viewport.",
+      "category": "refactor",
+      "roles": ["design"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 26,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "the {element} extends {amount} beyond the {container} on {viewport}. fix it.",
+      "model": "Claude Code",
+      "slots": {
+        "element": "login button",
+        "amount": "20px",
+        "container": "card border",
+        "viewport": "mobile"
+      }
+    },
+    {
+      "id": "review-your-changes-before",
+      "type": "prompt",
+      "title": "Review your changes before you commit",
+      "description": "Catch problems while they're still cheap to fix. Claude reads the changed files in full, not just the diff lines, so it spots issues a quick self-review misses.",
+      "category": "review",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 27,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "review my uncommitted changes and flag anything that looks risky before I commit",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "review-a-pull-request",
+      "type": "prompt",
+      "title": "Review a pull request",
+      "description": "Claude reviews with the whole codebase in context, not just the diff. It reads the changed code and what it calls, so it catches problems a diff-only review would miss.",
+      "category": "review",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 28,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "review PR #{pr} and summarize what changed, then list any concerns",
+      "model": "Claude Code",
+      "slots": {
+        "pr": "247"
+      }
+    },
+    {
+      "id": "review-infrastructure-changes-before",
+      "type": "prompt",
+      "title": "Review infrastructure changes before applying",
+      "description": "Plan output is dense and hard to scan. Pasting it gets you a plain-language summary of what's actually going to change before you apply it.",
+      "category": "review",
+      "roles": ["security", "ops"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 29,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "here is my Terraform plan output. what is this going to do, and is anything here going to cause problems?",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "run-a-security-review",
+      "type": "prompt",
+      "title": "Run a security review with a subagent",
+      "description": "A subagent runs the audit in its own context window and reports back a summary, so a long security review doesn't fill up your main session. The built-in general-purpose subagent handles this without extra setup.",
+      "category": "review",
+      "roles": ["security"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 30,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "use a subagent to review {path} for security issues and report what it finds",
+      "model": "Claude Code",
+      "slots": {
+        "path": "src/api/"
+      }
+    },
+    {
+      "id": "review-content-before-sending",
+      "type": "prompt",
+      "title": "Catch issues before formal review",
+      "description": "Get a first pass before a human spends time on it. Name the concerns you want checked so the review is focused, then fix what it finds and send a cleaner draft.",
+      "category": "review",
+      "roles": ["marketing", "docs"],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 31,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "review {file} for {concerns} and list anything I should fix before it goes to {reviewer}",
+      "model": "Claude Code",
+      "slots": {
+        "file": "launch-post.md",
+        "concerns": "unsupported claims, missing attributions, and brand-guideline issues",
+        "reviewer": "legal"
+      }
+    },
+    {
+      "id": "course-correct-a-wrong",
+      "type": "prompt",
+      "title": "Course-correct a wrong approach",
+      "description": "Name the constraint Claude missed, not just that it's wrong. A specific reason gives Claude a concrete constraint to satisfy on the retry, instead of guessing again.",
+      "category": "steer",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 32,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "that is not right: {feedback}. try a different approach",
+      "model": "Claude Code",
+      "slots": {
+        "feedback": "the function signature needs to stay backward-compatible"
+      }
+    },
+    {
+      "id": "narrow-the-scope-of",
+      "type": "prompt",
+      "title": "Narrow the scope of a change",
+      "description": "When the direction is right but the change went too broad, ask Claude to keep part of it rather than rewinding everything. A stated boundary keeps a small fix from becoming a refactor.",
+      "category": "steer",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 33,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "that is too much. keep only the changes to {scope} and undo your other edits",
+      "model": "Claude Code",
+      "slots": {
+        "scope": "the validation logic in src/forms/"
+      }
+    },
+    {
+      "id": "turn-a-correction-into",
+      "type": "prompt",
+      "title": "Turn a correction into a rule",
+      "description": "A correction in chat isn't shared with your team. A rule in the project's CLAUDE.md is shared once you commit it, and Claude reads it at the start of every session.",
+      "category": "steer",
+      "roles": [],
+      "sdlcStage": "build",
+      "favorite": false,
+      "order": 34,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "you keep {mistake}. add a rule to CLAUDE.md so this stops happening",
+      "model": "Claude Code",
+      "slots": {
+        "mistake": "using default exports when this project uses named exports"
+      }
+    },
+    {
+      "id": "resolve-merge-conflicts",
+      "type": "prompt",
+      "title": "Resolve merge conflicts",
+      "description": "Say what state you want, not which markers to keep. Asking for the reasoning makes the merge reviewable instead of a black box.",
+      "category": "git",
+      "roles": [],
+      "sdlcStage": "ship",
+      "favorite": false,
+      "order": 35,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "resolve the merge conflicts in this branch and explain what you kept from each side",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "commit-with-a-generated",
+      "type": "prompt",
+      "title": "Commit with a generated message",
+      "description": "Let Claude derive the message from the diff. It matches your repository's existing commit style.",
+      "category": "git",
+      "roles": [],
+      "sdlcStage": "ship",
+      "favorite": false,
+      "order": 36,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "commit these changes with a message that summarizes what I did",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "open-a-pull-request",
+      "type": "prompt",
+      "title": "Open a pull request from a ticket",
+      "description": "Skip the context switch between tracker, editor, and GitHub. One prompt reads the spec, makes the change, and opens the PR.",
+      "category": "git",
+      "roles": [],
+      "sdlcStage": "ship",
+      "favorite": false,
+      "order": 37,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "find the {tracker} ticket about {topic} and open a PR that implements it",
+      "model": "Claude Code",
+      "slots": {
+        "tracker": "Linear",
+        "topic": "the login timeout"
+      }
+    },
+    {
+      "id": "draft-release-notes-from",
+      "type": "prompt",
+      "title": "Draft release notes from git history",
+      "description": "Give two reference points and the structure you want. Claude reads the commit log between them and drafts a changelog you can edit.",
+      "category": "release",
+      "roles": ["pm", "docs", "marketing"],
+      "sdlcStage": "ship",
+      "favorite": false,
+      "order": 38,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "compare {from} to {to} and draft release notes grouped by feature, fix, and breaking change",
+      "model": "Claude Code",
+      "slots": {
+        "from": "v2.3.0",
+        "to": "v2.4.0"
+      }
+    },
+    {
+      "id": "write-a-ci-workflow",
+      "type": "prompt",
+      "title": "Write a CI workflow",
+      "description": "Describe when it should run and what it should do; the YAML is generated for you, matched to your project's build and test commands.",
+      "category": "release",
+      "roles": ["ops"],
+      "sdlcStage": "ship",
+      "favorite": false,
+      "order": 39,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "write a GitHub Actions workflow that {steps} on every push to {branch}",
+      "model": "Claude Code",
+      "slots": {
+        "steps": "runs the tests and deploys to staging",
+        "branch": "main"
+      }
+    },
+    {
+      "id": "find-and-fix-a",
+      "type": "prompt",
+      "title": "Find and fix a failing test",
+      "description": "Describe the symptom; you don't need to know which file is broken. Claude runs the test to see the failure, traces it into source, and fixes it.",
+      "category": "debug",
+      "roles": [],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 40,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "the {test} test is failing, find out why and fix it",
+      "model": "Claude Code",
+      "slots": {
+        "test": "UserAuth"
+      }
+    },
+    {
+      "id": "investigate-a-reported-error",
+      "type": "prompt",
+      "title": "Investigate a reported error",
+      "description": "Describe the symptom and location; Claude reads the relevant code path and traces likely causes. Paste stack traces or logs if you have them.",
+      "category": "debug",
+      "roles": ["ops"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 41,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "users are seeing {symptom} on {where}. investigate and tell me what is going on",
+      "model": "Claude Code",
+      "slots": {
+        "symptom": "500 errors",
+        "where": "/api/settings"
+      }
+    },
+    {
+      "id": "fix-a-build-error",
+      "type": "prompt",
+      "title": "Fix a build error at the root",
+      "description": "Asking for root cause and verification prevents surface-level patches that suppress the error without fixing it.",
+      "category": "debug",
+      "roles": ["ops"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 42,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "here is a build error. fix the root cause and verify the build succeeds",
+      "model": "Claude Code",
+      "slots": {}
+    },
+    {
+      "id": "investigate-a-production-incident",
+      "type": "prompt",
+      "title": "Investigate a production incident",
+      "description": "List the evidence sources to correlate, not the steps to take. Claude reads logs, git history, and config together to narrow the cause.",
+      "category": "debug",
+      "roles": ["ops", "security"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 43,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "{symptom}. check the logs, recent deploys, and config changes, then tell me the most likely cause",
+      "model": "Claude Code",
+      "slots": {
+        "symptom": "the checkout endpoint started returning 500s an hour ago"
+      }
+    },
+    {
+      "id": "diagnose-from-a-console",
+      "type": "prompt",
+      "title": "Diagnose from a console screenshot",
+      "description": "Cloud consoles show you the problem but not the commands to fix it. Claude reads the screenshot and translates the dashboard into the kubectl, gcloud, or aws commands to run.",
+      "category": "debug",
+      "roles": ["ops", "data"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 44,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "here is a screenshot of {console}. walk me through why {resource} is failing and give me the exact commands to fix it",
+      "model": "Claude Code",
+      "slots": {
+        "console": "the GCP Kubernetes dashboard",
+        "resource": "this pod"
+      }
+    },
+    {
+      "id": "query-logs-in-plain",
+      "type": "prompt",
+      "title": "Query logs in plain English",
+      "description": "Ask the question instead of writing the SQL. Claude builds the query, runs it against your connected logs, and shows both the query and the result so you can check what ran.",
+      "category": "debug",
+      "roles": ["security", "ops", "data"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 45,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "show me all {events} for {scope} over {timeframe}. write the query, run it, and tell me what stands out",
+      "model": "Claude Code",
+      "slots": {
+        "events": "failed logins",
+        "scope": "the auth service",
+        "timeframe": "the past 24 hours"
+      }
+    },
+    {
+      "id": "analyze-a-data-file",
+      "type": "prompt",
+      "title": "Analyze a data file",
+      "description": "A one-off question doesn't need a one-off script. Point at a file in your project folder and Claude reads it directly, finds the patterns, and writes the output where you ask.",
+      "category": "data",
+      "roles": ["data", "pm", "marketing"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 46,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "read {file}, summarize the key patterns, and write the results to {output}",
+      "model": "Claude Code",
+      "slots": {
+        "file": "@reports/q1-signups.csv",
+        "output": "an HTML page with charts, then open it in my browser"
+      }
+    },
+    {
+      "id": "generate-variations-from-performance",
+      "type": "prompt",
+      "title": "Generate variations from performance data",
+      "description": "State the constraint at the start so generation stays within the limit. Claude reads the metrics, picks what to replace, and produces alternatives that fit.",
+      "category": "data",
+      "roles": ["marketing", "data"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 47,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "read {file}, find the underperforming {items}, and generate {n} new variations that stay under {limit} characters",
+      "model": "Claude Code",
+      "slots": {
+        "file": "@ads-performance.csv",
+        "items": "headlines",
+        "n": "20",
+        "limit": "90"
+      }
+    },
+    {
+      "id": "turn-a-recurring-task",
+      "type": "prompt",
+      "title": "Turn a recurring task into a skill",
+      "description": "Name the steps once; reuse them as a command. Claude writes a skill anyone on your team can run.",
+      "category": "automate",
+      "roles": [],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 48,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "create a /{name} skill for this project that {steps}",
+      "model": "Claude Code",
+      "slots": {
+        "name": "ship",
+        "steps": "runs the linter and tests, then drafts a commit message"
+      }
+    },
+    {
+      "id": "add-a-hook-for",
+      "type": "prompt",
+      "title": "Add a hook for repeat behavior",
+      "description": "Hooks make a behavior automatic instead of something you have to remember to ask for. Describe the trigger and action and Claude writes the hook configuration.",
+      "category": "automate",
+      "roles": [],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 49,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "write a hook that {action} after every {event}",
+      "model": "Claude Code",
+      "slots": {
+        "action": "runs prettier",
+        "event": "edit to a .ts or .tsx file"
+      }
+    },
+    {
+      "id": "connect-a-tool-with",
+      "type": "prompt",
+      "title": "Connect a tool with MCP",
+      "description": "Connect the source once instead of pasting data every session. After MCP setup, Claude reads from the tool directly when you ask about it.",
+      "category": "automate",
+      "roles": [],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 50,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "set up the {server} MCP server so you can read my {data} directly",
+      "model": "Claude Code",
+      "slots": {
+        "server": "Sentry",
+        "data": "error reports"
+      }
+    },
+    {
+      "id": "capture-what-to-remember",
+      "type": "prompt",
+      "title": "Capture what to remember for next time",
+      "description": "Ask before you forget. Claude knows what it had to figure out this session and proposes CLAUDE.md entries so the next session starts with that context.",
+      "category": "automate",
+      "roles": ["pm", "docs"],
+      "sdlcStage": "operate",
+      "favorite": false,
+      "order": 51,
+      "createdAt": "2026-07-05T22:09:09.105Z",
+      "updatedAt": "2026-07-05T22:09:09.105Z",
+      "prompt": "summarize what we did this session and suggest what to add to CLAUDE.md",
+      "model": "Claude Code",
+      "slots": {}
+    }
+  ]
+}

@@ -3,6 +3,8 @@
   import AssetList from "./components/AssetList.svelte";
   import ConfirmDeleteModal from "./components/ConfirmDeleteModal.svelte";
   import StyleGuide from "./components/dev/StyleGuide.svelte";
+  import SettingsPanel from "./components/SettingsPanel.svelte";
+  import Button from "./components/ui/Button.svelte";
   import { addAsset, deleteAsset, updateAsset } from "./lib/stores";
   import type { Asset, AssetDraft } from "./lib/types";
 
@@ -24,6 +26,7 @@
   let editingAsset = $state<Asset | undefined>(undefined);
   let deleteOpen = $state(false);
   let deletingAsset = $state<Asset | undefined>(undefined);
+  let settingsOpen = $state(false);
 
   function openCreateForm() {
     editingAsset = undefined;
@@ -59,6 +62,9 @@
   <main>
     <header class="app-header">
       <h1>{appTitle}</h1>
+      <Button variant="ghost" size="sm" onclick={() => (settingsOpen = true)}>
+        Data
+      </Button>
       <a class="dev-link" href="#style-guide">Design system style guide →</a>
     </header>
 
@@ -79,6 +85,8 @@
       asset={deletingAsset}
       onConfirm={handleDeleteConfirm}
     />
+
+    <SettingsPanel bind:open={settingsOpen} />
   </main>
 {/if}
 
