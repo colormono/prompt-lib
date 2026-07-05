@@ -4,7 +4,7 @@ High-level implementation order in small, shippable phases. Each phase should
 leave the app usable. Phase 1 focus (per stakeholder): **core CRUD + a search,
 tagging, and filtering foundation.**
 
-## Phase 0 — Scaffold
+## Phase 0 — Scaffold ✅ Done
 
 - Initialize Svelte + TypeScript + Vite project.
 - Add Vitest and a lint/format setup.
