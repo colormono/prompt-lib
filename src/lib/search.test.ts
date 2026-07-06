@@ -5,10 +5,10 @@ import {
   distinctRoles,
   EMPTY_FILTERS,
   filterAssets,
-  matchesCategories,
+  matchesCategory,
   matchesFavorite,
   matchesQuery,
-  matchesRoles,
+  matchesRole,
   matchesType,
   searchableText,
 } from "./search";
@@ -20,8 +20,8 @@ function makePrompt(overrides: Partial<PromptAsset> = {}): PromptAsset {
     type: "prompt",
     title: "Summarize doc",
     description: "Summarizes a long document",
-    category: "writing",
-    roles: ["pm", "writer"],
+    category: "docs",
+    roles: ["pm", "docs"],
     sdlcStage: "build",
     favorite: false,
     order: 0,
@@ -40,8 +40,8 @@ function makeSkill(overrides: Partial<SkillAsset> = {}): SkillAsset {
     type: "skill",
     title: "Onboard teammate",
     description: "Steps to onboard a new hire",
-    category: "people",
-    roles: ["manager"],
+    category: "product",
+    roles: ["ops"],
     sdlcStage: "operate",
     favorite: true,
     order: 1,
@@ -75,9 +75,8 @@ describe("searchableText", () => {
     const text = searchableText(makePrompt());
     expect(text).toContain("summarize doc");
     expect(text).toContain("summarizes a long document");
-    expect(text).toContain("writing");
+    expect(text).toContain("docs");
     expect(text).toContain("pm");
-    expect(text).toContain("writer");
     expect(text).toContain("summarize {doc} in {n} bullet points");
     expect(text).toContain("gpt-4");
   });
@@ -109,23 +108,28 @@ describe("matchesType", () => {
   });
 });
 
-describe("matchesRoles", () => {
-  it("requires every selected role to be present (AND)", () => {
-    const tool = makeTool();
-    expect(matchesRoles(tool, [])).toBe(true);
-    expect(matchesRoles(tool, ["design"])).toBe(true);
-    expect(matchesRoles(tool, ["design", "pm"])).toBe(true);
-    expect(matchesRoles(tool, ["design", "writer"])).toBe(false);
+describe("matchesRole", () => {
+  it("matches everything when no role is selected", () => {
+    expect(matchesRole(makeTool(), null)).toBe(true);
+  });
+
+  it("matches when the asset includes the selected role", () => {
+    const tool = makeTool({ roles: ["design", "pm"] });
+    expect(matchesRole(tool, "design")).toBe(true);
+    expect(matchesRole(tool, "pm")).toBe(true);
+    expect(matchesRole(tool, "security")).toBe(false);
   });
 });
 
-describe("matchesCategories", () => {
-  it("matches if the asset's single category is any of the selected ones (OR)", () => {
+describe("matchesCategory", () => {
+  it("matches everything when no category is selected", () => {
+    expect(matchesCategory(makeTool(), null)).toBe(true);
+  });
+
+  it("matches only the asset's exact category", () => {
     const tool = makeTool({ category: "design" });
-    expect(matchesCategories(tool, [])).toBe(true);
-    expect(matchesCategories(tool, ["design"])).toBe(true);
-    expect(matchesCategories(tool, ["writing", "design"])).toBe(true);
-    expect(matchesCategories(tool, ["writing", "people"])).toBe(false);
+    expect(matchesCategory(tool, "design")).toBe(true);
+    expect(matchesCategory(tool, "docs")).toBe(false);
   });
 });
 
@@ -149,8 +153,8 @@ describe("filterAssets", () => {
       ...EMPTY_FILTERS,
       query: "design",
       type: "tool",
-      roles: ["pm"],
-      categories: ["design"],
+      role: "pm",
+      category: "design",
       favoritesOnly: false,
     });
     expect(result).toEqual([makeTool()]);
@@ -173,20 +177,17 @@ describe("countByType", () => {
 });
 
 describe("distinctRoles", () => {
-  it("returns sorted, de-duplicated roles across the library", () => {
+  it("returns roles used in the library, in fixed display order", () => {
     const assets = [makePrompt(), makeSkill(), makeTool()];
-    expect(distinctRoles(assets)).toEqual([
-      "design",
-      "manager",
-      "pm",
-      "writer",
-    ]);
+    // Fixed order: pm, design, marketing, docs, data, security, ops
+    expect(distinctRoles(assets)).toEqual(["pm", "design", "docs", "ops"]);
   });
 });
 
 describe("distinctCategories", () => {
-  it("returns sorted, de-duplicated categories, ignoring blanks", () => {
-    const assets = [makePrompt(), makeSkill(), makeTool({ category: "" })];
-    expect(distinctCategories(assets)).toEqual(["people", "writing"]);
+  it("returns categories used in the library, in fixed display order", () => {
+    const assets = [makePrompt(), makeSkill(), makeTool()];
+    // Fixed order includes: ... product ... design ... docs ...
+    expect(distinctCategories(assets)).toEqual(["product", "design", "docs"]);
   });
 });

@@ -1,14 +1,13 @@
 <script lang="ts">
+  import AboutModal from "./components/AboutModal.svelte";
+  import AppHeader from "./components/AppHeader.svelte";
   import AssetForm from "./components/AssetForm.svelte";
   import AssetList from "./components/AssetList.svelte";
   import ConfirmDeleteModal from "./components/ConfirmDeleteModal.svelte";
   import StyleGuide from "./components/dev/StyleGuide.svelte";
   import SettingsPanel from "./components/SettingsPanel.svelte";
-  import Button from "./components/ui/Button.svelte";
   import { addAsset, deleteAsset, updateAsset } from "./lib/stores";
   import type { Asset, AssetDraft } from "./lib/types";
-
-  const appTitle = "Colormo AI Prompt Manager";
 
   let hash = $state(window.location.hash);
 
@@ -27,6 +26,7 @@
   let deleteOpen = $state(false);
   let deletingAsset = $state<Asset | undefined>(undefined);
   let settingsOpen = $state(false);
+  let aboutOpen = $state(false);
 
   function openCreateForm() {
     editingAsset = undefined;
@@ -47,6 +47,7 @@
   }
 
   function openDeleteConfirm(asset: Asset) {
+    formOpen = false;
     deletingAsset = asset;
     deleteOpen = true;
   }
@@ -60,24 +61,19 @@
   <StyleGuide />
 {:else}
   <main>
-    <header class="app-header">
-      <h1>{appTitle}</h1>
-      <Button variant="ghost" size="sm" onclick={() => (settingsOpen = true)}>
-        Data
-      </Button>
-      <a class="dev-link" href="#style-guide">Design system style guide →</a>
-    </header>
-
-    <AssetList
-      onCreate={openCreateForm}
-      onEdit={openEditForm}
-      onDelete={openDeleteConfirm}
+    <AppHeader
+      onNewAsset={openCreateForm}
+      onOpenSettings={() => (settingsOpen = true)}
+      onOpenAbout={() => (aboutOpen = true)}
     />
+
+    <AssetList onCreate={openCreateForm} onEdit={openEditForm} />
 
     <AssetForm
       bind:open={formOpen}
       asset={editingAsset}
       onSubmit={handleFormSubmit}
+      onDelete={openDeleteConfirm}
     />
 
     <ConfirmDeleteModal
@@ -87,6 +83,7 @@
     />
 
     <SettingsPanel bind:open={settingsOpen} />
+    <AboutModal bind:open={aboutOpen} />
   </main>
 {/if}
 
@@ -95,18 +92,5 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
-
-  .app-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-6) var(--space-4) 0;
-    text-align: center;
-  }
-
-  .dev-link {
-    font-size: var(--font-size-sm);
   }
 </style>

@@ -1,4 +1,5 @@
 import type { Asset } from "./types";
+import { toCategory, toRoles } from "./types";
 
 const STORAGE_KEY = "prompt-lib:assets";
 
@@ -10,6 +11,20 @@ export function isAssetShape(value: unknown): value is Asset {
     typeof candidate.type === "string" &&
     typeof candidate.title === "string"
   );
+}
+
+/**
+ * Coerces `category`/`roles` to the fixed taxonomy so data saved before the
+ * taxonomy was fixed (or edited outside the app) can never surface an
+ * off-list value: unknown categories fall back to a safe default, unknown
+ * roles are dropped.
+ */
+function coerceTaxonomy(asset: Asset): Asset {
+  return {
+    ...asset,
+    category: toCategory(asset.category),
+    roles: toRoles(asset.roles),
+  };
 }
 
 /**
@@ -27,7 +42,7 @@ export function loadLibrary(): Asset[] {
   try {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(isAssetShape);
+    return parsed.filter(isAssetShape).map(coerceTaxonomy);
   } catch {
     return [];
   }

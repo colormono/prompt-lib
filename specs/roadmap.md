@@ -43,7 +43,18 @@ tagging, and filtering foundation.**
 - Import a library from JSON (with a resolve/merge step).
 - Reset to a starter library.
 
-## Phase 5 — Quality & maintenance
+## Phase 5 — UX redesign ✅ Done
+
+- Redesign the app header: sticky toolbar, light/dark toggle, list/grid view
+  toggle (list by default).
+- Redesign the filters bar: compact layout, single-select category chip,
+  single-select role chip, About modal opened from the logo.
+- Redesign asset cards: copy-to-clipboard + edit icon buttons, delete moved to
+  the asset modal, prompt preview (first 200 chars), inline accordion expand.
+- Redesign the new/edit asset modal: category & role selectors, model field
+  moved below the slots.
+
+## Phase 6 — Quality & maintenance
 
 - Status per asset (draft / tested / retired).
 - Usage count + last-used timestamp.

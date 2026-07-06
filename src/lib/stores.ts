@@ -10,7 +10,11 @@ import {
 } from "./search";
 import { STARTER_LIBRARY } from "./starterLibrary";
 import { loadLibrary, saveLibrary } from "./storage";
-import type { Asset, AssetDraft, AssetType } from "./types";
+import type { Theme } from "./theme";
+import { getInitialTheme, setTheme } from "./theme";
+import type { Asset, AssetDraft, AssetType, Category, Role } from "./types";
+import type { ViewMode } from "./viewMode";
+import { getInitialViewMode, setViewMode as persistViewMode } from "./viewMode";
 
 export const library = writable<Asset[]>(loadLibrary());
 
@@ -83,33 +87,26 @@ export function resetToStarterLibrary(): void {
 
 export const searchQuery = writable<string>(EMPTY_FILTERS.query);
 export const activeType = writable<AssetType | null>(EMPTY_FILTERS.type);
-export const activeRoles = writable<string[]>(EMPTY_FILTERS.roles);
-export const activeCategories = writable<string[]>(EMPTY_FILTERS.categories);
+export const activeRole = writable<Role | null>(EMPTY_FILTERS.role);
+export const activeCategory = writable<Category | null>(EMPTY_FILTERS.category);
 export const favoritesOnly = writable<boolean>(EMPTY_FILTERS.favoritesOnly);
 
 /** The library narrowed by every active filter, combined with AND. */
 export const visibleAssets = derived(
-  [
-    library,
-    searchQuery,
-    activeType,
-    activeRoles,
-    activeCategories,
-    favoritesOnly,
-  ],
+  [library, searchQuery, activeType, activeRole, activeCategory, favoritesOnly],
   ([
     $library,
     $searchQuery,
     $activeType,
-    $activeRoles,
-    $activeCategories,
+    $activeRole,
+    $activeCategory,
     $favoritesOnly,
   ]) =>
     filterAssets($library, {
       query: $searchQuery,
       type: $activeType,
-      roles: $activeRoles,
-      categories: $activeCategories,
+      role: $activeRole,
+      category: $activeCategory,
       favoritesOnly: $favoritesOnly,
     }),
 );
@@ -119,14 +116,14 @@ export const visibleAssets = derived(
  * the type filter itself so counts stay meaningful while switching types.
  */
 export const typeCounts = derived(
-  [library, searchQuery, activeRoles, activeCategories, favoritesOnly],
-  ([$library, $searchQuery, $activeRoles, $activeCategories, $favoritesOnly]) =>
+  [library, searchQuery, activeRole, activeCategory, favoritesOnly],
+  ([$library, $searchQuery, $activeRole, $activeCategory, $favoritesOnly]) =>
     countByType(
       filterAssets($library, {
         query: $searchQuery,
         type: null,
-        roles: $activeRoles,
-        categories: $activeCategories,
+        role: $activeRole,
+        category: $activeCategory,
         favoritesOnly: $favoritesOnly,
       }),
     ),
@@ -140,25 +137,21 @@ export function setActiveType(type: AssetType | null): void {
   activeType.set(type);
 }
 
-function toggleInList(list: string[], value: string): string[] {
-  return list.includes(value)
-    ? list.filter((item) => item !== value)
-    : [...list, value];
+/** Single-select: choosing the already-active role clears the filter. */
+export function setActiveRole(role: Role): void {
+  activeRole.update((current) => (current === role ? null : role));
 }
 
-export function toggleActiveRole(role: string): void {
-  activeRoles.update((roles) => toggleInList(roles, role));
-}
-
-export function toggleActiveCategory(category: string): void {
-  activeCategories.update((categories) => toggleInList(categories, category));
+/** Single-select: choosing the already-active category clears the filter. */
+export function setActiveCategory(category: Category): void {
+  activeCategory.update((current) => (current === category ? null : category));
 }
 
 export function setFavoritesOnly(value: boolean): void {
   favoritesOnly.set(value);
 }
 
-/** All distinct roles/categories in the library, for the filter chip lists. */
+/** All roles/categories used in the library, for the filter chip lists. */
 export const availableRoles = derived(library, ($library) =>
   distinctRoles($library),
 );
@@ -169,7 +162,27 @@ export const availableCategories = derived(library, ($library) =>
 export function clearFilters(): void {
   searchQuery.set(EMPTY_FILTERS.query);
   activeType.set(EMPTY_FILTERS.type);
-  activeRoles.set(EMPTY_FILTERS.roles);
-  activeCategories.set(EMPTY_FILTERS.categories);
+  activeRole.set(EMPTY_FILTERS.role);
+  activeCategory.set(EMPTY_FILTERS.category);
   favoritesOnly.set(EMPTY_FILTERS.favoritesOnly);
+}
+
+export const theme = writable<Theme>(getInitialTheme());
+
+theme.subscribe((value) => {
+  setTheme(value);
+});
+
+export function toggleTheme(): void {
+  theme.update((current) => (current === "light" ? "dark" : "light"));
+}
+
+export const viewMode = writable<ViewMode>(getInitialViewMode());
+
+viewMode.subscribe((value) => {
+  persistViewMode(value);
+});
+
+export function setViewMode(mode: ViewMode): void {
+  viewMode.set(mode);
 }

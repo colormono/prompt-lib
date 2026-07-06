@@ -1,18 +1,19 @@
-import type { Asset, AssetType } from "./types";
+import type { Asset, AssetType, Category, Role } from "./types";
+import { CATEGORIES, ROLES } from "./types";
 
 export interface AssetFilters {
   query: string;
   type: AssetType | null;
-  roles: string[];
-  categories: string[];
+  role: Role | null;
+  category: Category | null;
   favoritesOnly: boolean;
 }
 
 export const EMPTY_FILTERS: AssetFilters = {
   query: "",
   type: null,
-  roles: [],
-  categories: [],
+  role: null,
+  category: null,
   favoritesOnly: false,
 };
 
@@ -53,16 +54,19 @@ export function matchesType(asset: Asset, type: AssetType | null): boolean {
   return asset.type === type;
 }
 
-/** AND semantics — the asset must have every role in `roles`. */
-export function matchesRoles(asset: Asset, roles: string[]): boolean {
-  if (roles.length === 0) return true;
-  return roles.every((role) => asset.roles.includes(role));
+/** Single-select: with no role chosen everything matches; otherwise the asset must include it. */
+export function matchesRole(asset: Asset, role: Role | null): boolean {
+  if (role === null) return true;
+  return asset.roles.includes(role);
 }
 
-/** OR semantics — `category` is single-valued, so any match qualifies. */
-export function matchesCategories(asset: Asset, categories: string[]): boolean {
-  if (categories.length === 0) return true;
-  return categories.includes(asset.category);
+/** Single-select: with no category chosen everything matches; otherwise it must be an exact match. */
+export function matchesCategory(
+  asset: Asset,
+  category: Category | null,
+): boolean {
+  if (category === null) return true;
+  return asset.category === category;
 }
 
 export function matchesFavorite(asset: Asset, favoritesOnly: boolean): boolean {
@@ -75,8 +79,8 @@ export function filterAssets(assets: Asset[], filters: AssetFilters): Asset[] {
     (asset) =>
       matchesQuery(asset, filters.query) &&
       matchesType(asset, filters.type) &&
-      matchesRoles(asset, filters.roles) &&
-      matchesCategories(asset, filters.categories) &&
+      matchesRole(asset, filters.role) &&
+      matchesCategory(asset, filters.category) &&
       matchesFavorite(asset, filters.favoritesOnly),
   );
 }
@@ -95,16 +99,14 @@ export function countByType(assets: Asset[]): Record<AssetType, number> {
   return counts;
 }
 
-function distinctSorted(values: Iterable<string>): string[] {
-  return [...new Set(values)].sort((a, b) => a.localeCompare(b));
+/** Roles from the fixed list that are actually used in the library, in fixed display order. */
+export function distinctRoles(assets: Asset[]): Role[] {
+  const used = new Set(assets.flatMap((asset) => asset.roles));
+  return ROLES.filter((role) => used.has(role));
 }
 
-export function distinctRoles(assets: Asset[]): string[] {
-  return distinctSorted(assets.flatMap((asset) => asset.roles));
-}
-
-export function distinctCategories(assets: Asset[]): string[] {
-  return distinctSorted(
-    assets.map((asset) => asset.category).filter((category) => category !== ""),
-  );
+/** Categories from the fixed list that are actually used in the library, in fixed display order. */
+export function distinctCategories(assets: Asset[]): Category[] {
+  const used = new Set(assets.map((asset) => asset.category));
+  return CATEGORIES.filter((category) => used.has(category));
 }
