@@ -7,7 +7,7 @@ function makePromptDraft(overrides: Partial<PromptDraft> = {}): PromptDraft {
     type: "prompt",
     title: "Summarize doc",
     description: "Summarizes a document",
-    category: "writing",
+    category: "docs",
     roles: ["pm"],
     sdlcStage: "build",
     prompt: "Summarize {doc} in {n} bullet points",
@@ -196,32 +196,51 @@ describe("stores", () => {
       expect(get(visibleAssets)[0].type).toBe("tool");
     });
 
-    it("visibleAssets requires all active roles (AND)", async () => {
-      const { visibleAssets, addAsset, toggleActiveRole } = await freshStores();
+    it("visibleAssets narrows by a single selected role", async () => {
+      const { visibleAssets, addAsset, setActiveRole } = await freshStores();
       addAsset(makePromptDraft({ roles: ["pm"] }));
-      addAsset(makePromptDraft({ roles: ["pm", "design"], title: "Second" }));
+      addAsset(makePromptDraft({ roles: ["design"], title: "Second" }));
 
-      toggleActiveRole("pm");
-      toggleActiveRole("design");
+      setActiveRole("design");
 
       expect(get(visibleAssets)).toHaveLength(1);
       expect(get(visibleAssets)[0].title).toBe("Second");
     });
 
-    it("visibleAssets matches any active category (OR)", async () => {
-      const { visibleAssets, addAsset, toggleActiveCategory } =
-        await freshStores();
-      addAsset(makePromptDraft({ category: "writing" }));
-      addAsset(makePromptDraft({ category: "design", title: "Second" }));
-      addAsset(makePromptDraft({ category: "people", title: "Third" }));
+    it("setActiveRole clears the filter when the active role is re-selected", async () => {
+      const { visibleAssets, addAsset, setActiveRole } = await freshStores();
+      addAsset(makePromptDraft({ roles: ["pm"] }));
+      addAsset(makePromptDraft({ roles: ["design"], title: "Second" }));
 
-      toggleActiveCategory("writing");
-      toggleActiveCategory("design");
+      setActiveRole("design");
+      setActiveRole("design");
+
+      expect(get(visibleAssets)).toHaveLength(2);
+    });
+
+    it("visibleAssets narrows by a single selected category", async () => {
+      const { visibleAssets, addAsset, setActiveCategory } =
+        await freshStores();
+      addAsset(makePromptDraft({ category: "docs" }));
+      addAsset(makePromptDraft({ category: "design", title: "Second" }));
+
+      setActiveCategory("design");
 
       expect(get(visibleAssets).map((asset) => asset.title)).toEqual([
-        "Summarize doc",
         "Second",
       ]);
+    });
+
+    it("setActiveCategory clears the filter when the active category is re-selected", async () => {
+      const { visibleAssets, addAsset, setActiveCategory } =
+        await freshStores();
+      addAsset(makePromptDraft({ category: "docs" }));
+      addAsset(makePromptDraft({ category: "design", title: "Second" }));
+
+      setActiveCategory("design");
+      setActiveCategory("design");
+
+      expect(get(visibleAssets)).toHaveLength(2);
     });
 
     it("visibleAssets narrows to favorites only", async () => {
@@ -243,8 +262,8 @@ describe("stores", () => {
         addAsset,
         setSearchQuery,
         setActiveType,
-        toggleActiveRole,
-        toggleActiveCategory,
+        setActiveRole,
+        setActiveCategory,
         setFavoritesOnly,
         clearFilters,
       } = await freshStores();
@@ -253,12 +272,31 @@ describe("stores", () => {
 
       setSearchQuery("nope");
       setActiveType("tool");
-      toggleActiveRole("pm");
-      toggleActiveCategory("design");
+      setActiveRole("pm");
+      setActiveCategory("design");
       setFavoritesOnly(true);
       clearFilters();
 
       expect(get(visibleAssets)).toHaveLength(2);
+    });
+  });
+
+  describe("preferences", () => {
+    it("toggleTheme flips between light and dark", async () => {
+      const { theme, toggleTheme } = await freshStores();
+      const initial = get(theme);
+
+      toggleTheme();
+
+      expect(get(theme)).not.toBe(initial);
+    });
+
+    it("setViewMode updates the view mode store", async () => {
+      const { viewMode, setViewMode } = await freshStores();
+
+      setViewMode("grid");
+
+      expect(get(viewMode)).toBe("grid");
     });
   });
 });

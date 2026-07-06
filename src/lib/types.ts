@@ -4,13 +4,45 @@ export type SdlcStage = "discover" | "design" | "build" | "ship" | "operate";
 
 export type ResourceType = "article" | "video" | "doc" | "other";
 
+/** Fixed taxonomy: what stage of work an asset is used for. */
+export type Category =
+  | "understand"
+  | "plan"
+  | "prototype"
+  | "build"
+  | "test"
+  | "refactor"
+  | "review"
+  | "steer"
+  | "debug"
+  | "git"
+  | "release"
+  | "data"
+  | "automate"
+  | "product"
+  | "design"
+  | "docs"
+  | "marketing"
+  | "security"
+  | "on-call";
+
+/** Fixed taxonomy: who an asset is relevant to. */
+export type Role =
+  | "pm"
+  | "design"
+  | "marketing"
+  | "docs"
+  | "data"
+  | "security"
+  | "ops";
+
 export interface BaseAsset {
   id: string;
   type: AssetType;
   title: string;
   description: string;
-  category: string;
-  roles: string[];
+  category: Category;
+  roles: Role[];
   sdlcStage: SdlcStage;
   favorite: boolean;
   order: number;
@@ -47,8 +79,8 @@ export type Asset = PromptAsset | SkillAsset | ToolAsset | ResourceAsset;
 interface BaseAssetDraft {
   title: string;
   description: string;
-  category: string;
-  roles: string[];
+  category: Category;
+  roles: Role[];
   sdlcStage: SdlcStage;
 }
 
@@ -111,3 +143,67 @@ export const RESOURCE_TYPES: ResourceType[] = [
   "doc",
   "other",
 ];
+
+/** Fixed category list, in display order. Source of truth for the form selector and filter chips. */
+export const CATEGORIES: Category[] = [
+  "understand",
+  "plan",
+  "prototype",
+  "build",
+  "test",
+  "refactor",
+  "review",
+  "steer",
+  "debug",
+  "git",
+  "release",
+  "data",
+  "automate",
+  "product",
+  "design",
+  "docs",
+  "marketing",
+  "security",
+  "on-call",
+];
+
+/** Fixed role list, in display order. Source of truth for the form selector and filter chips. */
+export const ROLES: Role[] = [
+  "pm",
+  "design",
+  "marketing",
+  "docs",
+  "data",
+  "security",
+  "ops",
+];
+
+const DEFAULT_CATEGORY: Category = "build";
+
+export function isCategory(value: unknown): value is Category {
+  return CATEGORIES.includes(value as Category);
+}
+
+export function isRole(value: unknown): value is Role {
+  return ROLES.includes(value as Role);
+}
+
+/** Coerces an unknown category to a valid one, defaulting to `"build"`. */
+export function toCategory(value: unknown): Category {
+  return isCategory(value) ? value : DEFAULT_CATEGORY;
+}
+
+/** Coerces an unknown roles array, dropping any entries outside the fixed list. */
+export function toRoles(value: unknown): Role[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(isRole);
+}
+
+/** Title-cases a fixed taxonomy value for display, e.g. `"on-call"` → `"On-call"`, `"pm"` → `"PM"`. */
+export function formatTaxonomyLabel(value: Category | Role): string {
+  if (value === "pm") return "PM";
+  return value
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("-");
+}

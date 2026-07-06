@@ -15,7 +15,7 @@ function seedLibrary() {
     type: "prompt",
     title: "Summarize doc",
     description: "Summarizes a document",
-    category: "writing",
+    category: "docs",
     roles: ["pm"],
     sdlcStage: "build",
     prompt: "Summarize {doc}",

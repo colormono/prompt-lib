@@ -82,3 +82,17 @@ h6 {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
+
+/* Visually hides content while keeping it available to assistive tech —
+   used for group/fieldset legends that would otherwise be visually redundant. */
+.sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

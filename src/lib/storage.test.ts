@@ -54,6 +54,27 @@ describe("storage", () => {
     expect(loadLibrary()).toEqual([valid]);
   });
 
+  it("coerces an off-list category to the safe default", () => {
+    const stored = makeTool({ category: "engineering" as never });
+    localStorage.setItem("prompt-lib:assets", JSON.stringify([stored]));
+
+    expect(loadLibrary()[0].category).toBe("build");
+  });
+
+  it("drops off-list roles while keeping valid ones", () => {
+    const stored = makeTool({ roles: ["design", "engineer"] as never });
+    localStorage.setItem("prompt-lib:assets", JSON.stringify([stored]));
+
+    expect(loadLibrary()[0].roles).toEqual(["design"]);
+  });
+
+  it("leaves valid category and roles unchanged", () => {
+    const stored = makeTool({ category: "design", roles: ["design", "pm"] });
+    localStorage.setItem("prompt-lib:assets", JSON.stringify([stored]));
+
+    expect(loadLibrary()[0]).toEqual(stored);
+  });
+
   it("throws a StorageWriteError when localStorage.setItem fails", () => {
     const spy = vi
       .spyOn(Storage.prototype, "setItem")

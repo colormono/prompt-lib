@@ -1,10 +1,12 @@
 <script lang="ts">
+  import type { HTMLSelectAttributes } from "svelte/elements";
+
   interface SelectOption {
     value: string;
     label: string;
   }
 
-  interface Props {
+  interface Props extends Omit<HTMLSelectAttributes, "value"> {
     label: string;
     value?: string;
     options: SelectOption[];
