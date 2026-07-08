@@ -39,14 +39,14 @@
   --color-danger-100: #fbdedf;
 
   /* Semantic role aliases (what components should reference) */
-  --color-bg: var(--color-neutral-0);
-  --color-bg-subtle: var(--color-neutral-50);
+  --color-bg: var(--color-neutral-50);
+  --color-bg-subtle: var(--color-neutral-100);
   --color-surface: var(--color-neutral-0);
   --color-surface-raised: var(--color-neutral-0);
   --color-border: var(--color-neutral-200);
   --color-border-strong: var(--color-neutral-300);
   --color-text: var(--color-neutral-900);
-  --color-text-muted: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-500);
   --color-text-on-brand: var(--color-neutral-0);
   --color-text-on-danger: var(--color-neutral-0);
 
@@ -54,6 +54,16 @@
   --color-accent-hover: var(--color-brand-600);
   --color-accent-active: var(--color-brand-700);
   --color-accent-subtle: var(--color-brand-100);
+
+  /* Solid-fill surfaces (primary buttons, active chips): always paired with
+     --color-text-on-brand. Kept separate from --color-accent because that
+     token also colors text/icons/links directly against the page
+     background, which needs a different lightness step per theme than a
+     filled surface with white text on top does (see the dark theme
+     override below). */
+  --color-accent-solid: var(--color-brand-500);
+  --color-accent-solid-hover: var(--color-brand-600);
+  --color-accent-solid-active: var(--color-brand-700);
 
   --color-success: var(--color-success-500);
   --color-success-subtle: var(--color-success-100);
@@ -103,9 +113,9 @@
   --space-16: 4rem;
 
   /* Radii */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
   --radius-pill: 999px;
 
   /* Shadows (elevation) */
@@ -134,6 +144,14 @@
   --color-accent-hover: var(--color-brand-500);
   --color-accent-active: var(--color-brand-100);
   --color-accent-subtle: var(--color-neutral-800);
+
+  /* Deliberately NOT the same lighter step as --color-accent above: white
+     text on brand-300 measures 2.1:1 (fails WCAG AA's 4.5:1). Solid-fill
+     surfaces keep the same brand-500/600/700 steps as light theme, which
+     stay readable with white text in both themes. */
+  --color-accent-solid: var(--color-brand-500);
+  --color-accent-solid-hover: var(--color-brand-600);
+  --color-accent-solid-active: var(--color-brand-700);
 
   --color-success-subtle: var(--color-neutral-800);
   --color-warning-subtle: var(--color-neutral-800);

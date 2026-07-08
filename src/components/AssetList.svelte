@@ -19,7 +19,8 @@
   const currentViewMode = $derived($viewMode);
 </script>
 
-<section class="asset-list">
+<section class="asset-list" aria-labelledby="asset-list-heading">
+  <h2 id="asset-list-heading" class="sr-only">Library</h2>
   {#if !libraryIsEmpty}
     <FilterBar />
   {/if}
@@ -49,6 +50,7 @@
   .asset-list {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: var(--space-4);
     width: 100%;
     max-width: 72rem;
@@ -61,11 +63,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex: 1;
     gap: var(--space-3);
+    min-height: 16rem;
     padding: var(--space-16) var(--space-4);
     border: 1px dashed var(--color-border-strong);
     border-radius: var(--radius-lg);
     color: var(--color-text-muted);
+    text-align: center;
   }
 
   .asset-list__grid {

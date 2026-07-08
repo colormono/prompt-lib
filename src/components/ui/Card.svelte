@@ -25,6 +25,8 @@
   .card {
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);

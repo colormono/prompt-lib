@@ -11,6 +11,14 @@
 
   let { open = $bindable(false), asset, onConfirm }: Props = $props();
 
+  const TITLE_PREVIEW_LENGTH = 60;
+
+  const displayTitle = $derived(
+    asset && asset.title.length > TITLE_PREVIEW_LENGTH
+      ? `${asset.title.slice(0, TITLE_PREVIEW_LENGTH)}…`
+      : asset?.title,
+  );
+
   function handleCancel() {
     open = false;
   }
@@ -24,7 +32,8 @@
 
 <Modal bind:open title="Delete asset?">
   <p>
-    Delete <strong>{asset?.title}</strong>? This can't be undone.
+    Delete <strong title={asset?.title}>{displayTitle}</strong>? This can't be
+    undone.
   </p>
   {#snippet footer()}
     <Button variant="ghost" onclick={handleCancel}>Cancel</Button>

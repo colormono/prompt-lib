@@ -11,7 +11,7 @@
 <Modal bind:open title="About">
   <div class="about">
     <p>
-      <strong>Colormo AI Prompt Manager</strong> is a personal catalog for the
+      <strong>Colormono AI Prompt Manager</strong> is a personal catalog for the
       prompts, skills, tools, and resources used to get work done — one
       local-first library instead of scattered notes and chat histories.
     </p>

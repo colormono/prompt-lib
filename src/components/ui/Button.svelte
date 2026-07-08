@@ -79,16 +79,16 @@
 
   /* Variants */
   .btn--primary {
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-solid);
     color: var(--color-text-on-brand);
   }
 
   .btn--primary:not(:disabled):hover {
-    background-color: var(--color-accent-hover);
+    background-color: var(--color-accent-solid-hover);
   }
 
   .btn--primary:not(:disabled):active {
-    background-color: var(--color-accent-active);
+    background-color: var(--color-accent-solid-active);
   }
 
   .btn--secondary {

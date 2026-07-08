@@ -135,7 +135,7 @@
     width: 100%;
     max-width: 32rem;
     max-height: calc(100vh - var(--space-8));
-    overflow-y: auto;
+    overflow: hidden;
     background-color: var(--color-surface-raised);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
@@ -146,6 +146,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
+    flex-shrink: 0;
     padding: var(--space-4);
     border-bottom: 1px solid var(--color-border);
   }
@@ -170,13 +171,17 @@
   }
 
   .modal__body {
+    flex: 1;
+    min-height: 0;
     padding: var(--space-4);
+    overflow-y: auto;
   }
 
   .modal__footer {
     display: flex;
     justify-content: flex-end;
     gap: var(--space-2);
+    flex-shrink: 0;
     padding: var(--space-4);
     border-top: 1px solid var(--color-border);
   }

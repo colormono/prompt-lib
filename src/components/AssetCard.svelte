@@ -58,9 +58,22 @@
     expanded = !expanded;
   }
 
-  async function handleCopy(event: MouseEvent) {
+  /** Collapsed header copy: raw prompt template (placeholders intact). */
+  async function handleHeaderCopy(event: MouseEvent) {
     event.stopPropagation();
-    const text = getCopyText(asset, asset.type === "prompt" ? slotValues : undefined);
+    const text =
+      asset.type === "prompt" ? asset.prompt : getCopyText(asset);
+    await copyToClipboard(text);
+  }
+
+  /** Expanded panel copy: prompt with current slot inputs filled in. */
+  async function handleFilledCopy(event: MouseEvent) {
+    event.stopPropagation();
+    const text = getCopyText(asset, slotValues);
+    await copyToClipboard(text);
+  }
+
+  async function copyToClipboard(text: string) {
     try {
       await navigator.clipboard.writeText(text);
       copied = true;
@@ -93,12 +106,21 @@
       <Badge variant={TYPE_VARIANTS[asset.type]}>
         {TYPE_LABELS[asset.type]}
       </Badge>
+      {#if asset.roles.length > 0}
+        <div class="asset-card__roles">
+          {#each asset.roles as role (role)}
+            <Badge variant="neutral">{formatTaxonomyLabel(role)}</Badge>
+          {/each}
+        </div>
+      {/if}
       <div class="asset-card__actions">
         <button
           type="button"
           class="asset-card__icon-btn"
-          aria-label="Copy to clipboard"
-          onclick={handleCopy}
+          aria-label={asset.type === "prompt"
+            ? "Copy prompt template"
+            : "Copy to clipboard"}
+          onclick={handleHeaderCopy}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" />
@@ -130,7 +152,15 @@
             : "Add to favorites"}
           onclick={handleFavorite}
         >
-          {asset.favorite ? "★" : "☆"}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path
+              d="M8 2.5 9.8 6.1l3.9.6-2.8 2.8.7 3.9L8 11.4 4.4 13.4l.7-3.9L2.3 6.7l3.9-.6L8 2.5Z"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linejoin="round"
+              fill={asset.favorite ? "currentColor" : "none"}
+            />
+          </svg>
         </button>
       </div>
     </div>
@@ -144,13 +174,6 @@
       <h3 class="asset-card__title">{asset.title}</h3>
       {#if preview}
         <p class="asset-card__preview">{preview}</p>
-      {/if}
-      {#if asset.roles.length > 0}
-        <div class="asset-card__roles">
-          {#each asset.roles as role (role)}
-            <Badge variant="neutral">{formatTaxonomyLabel(role)}</Badge>
-          {/each}
-        </div>
       {/if}
     </button>
 
@@ -175,9 +198,10 @@
           <button
             type="button"
             class="asset-card__copy-btn"
-            onclick={handleCopy}
+            aria-label="Copy with filled slots"
+            onclick={handleFilledCopy}
           >
-            Copy
+            Copy filled
           </button>
           {#if asset.description}
             <p class="asset-card__panel-label">Why this works</p>
@@ -205,13 +229,14 @@
   .asset-card__top {
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
     gap: var(--space-2);
   }
 
   .asset-card__actions {
     display: flex;
+    flex-grow: 1;
     align-items: center;
+    justify-content: flex-end;
     gap: var(--space-1);
   }
 
@@ -241,7 +266,10 @@
   }
 
   .asset-card__icon-btn--active {
-    color: var(--color-warning);
+    /* Electric Indigo, not --color-warning: favoriting is an actionable
+       selection state, not a status signal, and warning/amber is already
+       reserved for the "Tool" type badge (see DESIGN.md's One Signal Rule). */
+    color: var(--color-accent);
   }
 
   .asset-card__toggle {
@@ -269,6 +297,7 @@
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
     font-family: var(--font-family-mono);
+    overflow-wrap: anywhere;
   }
 
   .asset-card__roles {
@@ -294,9 +323,7 @@
 
   .asset-card__panel-label {
     font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-muted);
   }
 
@@ -305,6 +332,7 @@
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     color: var(--color-text);
+    overflow-wrap: anywhere;
   }
 
   .asset-card__slot-input {
@@ -322,14 +350,14 @@
     align-self: flex-start;
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-md);
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-solid);
     color: var(--color-text-on-brand);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
   }
 
   .asset-card__copy-btn:hover {
-    background-color: var(--color-accent-hover);
+    background-color: var(--color-accent-solid-hover);
   }
 
   .asset-card__why {

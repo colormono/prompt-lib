@@ -25,7 +25,7 @@
   }
 
   .badge--neutral {
-    background-color: var(--color-bg-subtle);
+    border: 1px solid var(--color-bg-subtle);
     color: var(--color-text-muted);
   }
 

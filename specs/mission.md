@@ -2,7 +2,7 @@
 
 ## What this is
 
-Colormo's AI Prompt Manager is a **personal catalog** for the prompts, skills,
+Colormono's AI Prompt Manager is a **personal catalog** for the prompts, skills,
 tools, and resources I use to get my work done. One local-first library where my
 AI working assets live as searchable, taxonomy-coded cards instead of being
 scattered across notes apps, chat histories, and text files.

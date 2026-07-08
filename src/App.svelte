@@ -27,6 +27,20 @@
   let deletingAsset = $state<Asset | undefined>(undefined);
   let settingsOpen = $state(false);
   let aboutOpen = $state(false);
+  let statusMessage = $state<string | null>(null);
+  let statusTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  function showStatus(message: string) {
+    statusMessage = message;
+    clearTimeout(statusTimeout);
+    statusTimeout = setTimeout(() => {
+      statusMessage = null;
+    }, 3000);
+  }
+
+  function truncateTitle(title: string, max = 48): string {
+    return title.length > max ? `${title.slice(0, max)}…` : title;
+  }
 
   function openCreateForm() {
     editingAsset = undefined;
@@ -54,6 +68,7 @@
 
   function handleDeleteConfirm(asset: Asset) {
     deleteAsset(asset.id);
+    showStatus(`Deleted "${truncateTitle(asset.title)}".`);
   }
 </script>
 
@@ -66,6 +81,10 @@
       onOpenSettings={() => (settingsOpen = true)}
       onOpenAbout={() => (aboutOpen = true)}
     />
+
+    {#if statusMessage}
+      <p class="app-status" role="status" aria-live="polite">{statusMessage}</p>
+    {/if}
 
     <AssetList onCreate={openCreateForm} onEdit={openEditForm} />
 
@@ -82,7 +101,10 @@
       onConfirm={handleDeleteConfirm}
     />
 
-    <SettingsPanel bind:open={settingsOpen} />
+    <SettingsPanel
+      bind:open={settingsOpen}
+      onResetComplete={() => showStatus("Library reset to starter set.")}
+    />
     <AboutModal bind:open={aboutOpen} />
   </main>
 {/if}
@@ -92,5 +114,16 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+  }
+
+  .app-status {
+    align-self: center;
+    margin-block: 0 var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-success-subtle);
+    color: var(--color-success);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
   }
 </style>

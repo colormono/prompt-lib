@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-08T15:10:00Z",
+  "title": "Design System: Colormono AI Prompt Manager",
+  "extensions": {
+    "colorMeta": {
+      "electric-indigo": {
+        "role": "primary",
+        "displayName": "Electric Indigo",
+        "canonical": "#5b63f5",
+        "tonalRamp": ["#e4e7ff", "#a5adfb", "#5b63f5", "#4348dc", "#3336ab"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#16181f",
+        "tonalRamp": [
+          "#ffffff",
+          "#f8f9fb",
+          "#eef0f4",
+          "#dde1e8",
+          "#c3c9d4",
+          "#9aa2b1",
+          "#717a8c",
+          "#545c6d",
+          "#3c4251",
+          "#262a35",
+          "#16181f",
+          "#0c0d11"
+        ]
+      },
+      "signal-green": {
+        "role": "functional",
+        "displayName": "Signal Green",
+        "canonical": "#1f9d55",
+        "tonalRamp": ["#d9f5e3", "#1f9d55"]
+      },
+      "signal-amber": {
+        "role": "functional",
+        "displayName": "Signal Amber",
+        "canonical": "#b9770e",
+        "tonalRamp": ["#faecd0", "#b9770e"]
+      },
+      "signal-red": {
+        "role": "functional",
+        "displayName": "Signal Red",
+        "canonical": "#d1373f",
+        "tonalRamp": ["#fbdedf", "#d1373f"]
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Title",
+        "purpose": "App header title, modal titles. The largest text in the system."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, prompt previews, form values."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form field labels, badges, filter chips."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Prompt bodies and other code-shaped content only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sm",
+        "value": "0 1px 2px rgba(12, 13, 17, 0.06)",
+        "purpose": "Default resting shadow on cards; barely perceptible."
+      },
+      {
+        "name": "md",
+        "value": "0 4px 12px rgba(12, 13, 17, 0.1)",
+        "purpose": "Raised/active state, e.g. the active view-toggle button."
+      },
+      {
+        "name": "lg",
+        "value": "0 12px 32px rgba(12, 13, 17, 0.16)",
+        "purpose": "Reserved for the modal, the one true overlay in the system."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transition-fast",
+        "value": "120ms ease",
+        "purpose": "Icon-button and small control hover/active feedback."
+      },
+      {
+        "name": "transition-base",
+        "value": "200ms ease",
+        "purpose": "Theme switch, larger surface color transitions."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default call-to-action button. The only place color signals \"act on this\".",
+      "html": "<button class=\"ds-btn ds-btn-primary\">New asset</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 8px; border: 1px solid transparent; font-weight: 500; padding: 8px 16px; font-size: 1rem; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; } .ds-btn-primary { background-color: #5b63f5; color: #ffffff; } .ds-btn-primary:hover { background-color: #4348dc; } .ds-btn-primary:active { background-color: #3336ab; } .ds-btn-primary:focus-visible { outline: 2px solid #5b63f5; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Non-primary action; sits beside Primary without competing.",
+      "html": "<button class=\"ds-btn ds-btn-secondary\">Cancel</button>",
+      "css": ".ds-btn-secondary { background-color: #ffffff; border-color: #c3c9d4; color: #16181f; } .ds-btn-secondary:hover { background-color: #f8f9fb; } .ds-btn-secondary:focus-visible { outline: 2px solid #5b63f5; outline-offset: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive confirmation only (e.g. delete asset).",
+      "html": "<button class=\"ds-btn ds-btn-danger\">Delete</button>",
+      "css": ".ds-btn-danger { background-color: #d1373f; color: #ffffff; } .ds-btn-danger:hover { opacity: 0.9; } .ds-btn-danger:focus-visible { outline: 2px solid #5b63f5; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Labeled text field with help/error message slot.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-demo-input\">Title</label><input id=\"ds-demo-input\" class=\"ds-field-control\" type=\"text\" placeholder=\"Prompt title\" /></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 4px; } .ds-field-label { font-size: 0.875rem; font-weight: 500; color: #16181f; } .ds-field-control { padding: 8px 12px; border-radius: 8px; border: 1px solid #c3c9d4; background-color: #ffffff; color: #16181f; font-size: 1rem; transition: border-color 120ms ease; } .ds-field-control::placeholder { color: #545c6d; } .ds-field-control:focus-visible { outline: 2px solid #5b63f5; outline-offset: 2px; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat-leaning container: hairline border does the separating, shadow is a whisper.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-body\">Card content</div></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; background-color: #ffffff; border: 1px solid #dde1e8; border-radius: 12px; box-shadow: 0 1px 2px rgba(12, 13, 17, 0.06); } .ds-card-body { padding: 16px; }"
+    },
+    {
+      "name": "Brand Badge",
+      "kind": "chip",
+      "refersTo": "badge-brand",
+      "description": "Pill tag for tags/categories; status color only, never decoration.",
+      "html": "<span class=\"ds-badge ds-badge-brand\">prompt</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 500; line-height: 1.2; } .ds-badge-brand { background-color: #e4e7ff; color: #5b63f5; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Console",
+    "overview": "This is a control surface, not a storefront — a precise instrument built for exactly one operator, used mid-workflow to find, copy, and get back to work in seconds. Every visual decision serves retrieval speed and quiet confidence: the interface recedes so the cataloged content (a prompt's actual text, a tool's description) stays the visual focus, and the one saturated color in the system — Electric Indigo — exists to mean a single thing: act on this. The system rejects the SaaS-dashboard reflex of card-grid monotony, gradient text, hero metrics, and decorative eyebrows named directly in PRODUCT.md's anti-references. Nothing here needs to sell itself; it already has its one user. Density and precision read as respect for that user's time, not as sterility — buttons and controls stay tactile and confident (clear hover/active states, real color shifts) rather than flat and inert. Light and dark are both first-class: the same semantic role names resolve to different neutral/brand steps per theme, so no component ever branches on theme directly.",
+    "keyCharacteristics": [
+      "One accent color (Electric Indigo), used sparingly and only for actionable/interactive emphasis",
+      "Flat-leaning surfaces with hairline borders; shadows present but whispered, never the primary depth cue",
+      "System font stack — no custom display type, because there is no display moment to serve",
+      "Tight, disciplined spacing scale (4px base) and a small, consistent radius set",
+      "Fast, unshowy motion (120–200ms ease) on state changes only"
+    ],
+    "rules": [
+      {
+        "name": "The One Signal Rule",
+        "body": "Electric Indigo appears only where the user can act: buttons, links, active toggles, focus rings, checkboxes. It never appears as a background wash, a gradient stop, or plain decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Whisper Shadow Rule",
+        "body": "Depth comes from hairline borders first, shadow second. A component that needs a heavy shadow to read as \"raised\" should get a border instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Hero Rule",
+        "body": "No font size in this system exceeds 1.25rem (Title). If a screen seems to need something bigger, the answer is better information architecture, not a bigger headline.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. A shadow above sm only appears in direct response to state (raised/active) or true overlay (modal); it is never used to make an otherwise-static element look \"designed\".",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep Electric Indigo (#5b63f5 / #a5adfb dark) to actionable elements only: buttons, links, focus rings, active states, checkboxes.",
+      "Do lead with a 1px Hairline border for surface separation; add shadow only for raised/active state or the modal overlay.",
+      "Do use the system font stack at the existing size steps (0.75rem–1.25rem); resist introducing a display face or a size above 1.25rem.",
+      "Do give every interactive primitive a clear, immediate hover/active color shift — the tactile-and-confident standard.",
+      "Do compose new feature UI from the existing primitives (Button, Input, Select, Checkbox, Card, Badge, Modal, Textarea) rather than one-off styling."
+    ],
+    "donts": [
+      "Don't use card-grid monotony, gradient text, hero-metric layouts, or tiny uppercase eyebrow labels — named anti-references from PRODUCT.md.",
+      "Don't reach for glassmorphism or decorative blur; this system has none.",
+      "Don't let a status color (green/amber/red) appear anywhere except status/state contexts — they are not decorative accents.",
+      "Don't introduce a heavy shadow (lg) outside the modal; it's reserved for the one true overlay.",
+      "Don't use border-left/border-right as a colored accent stripe on cards or list rows.",
+      "Don't add motion beyond the existing 120–200ms ease state-change transitions; there is no choreographed/scroll-driven motion in this system."
+    ]
+  }
+}

@@ -10,7 +10,7 @@
 
   const { onNewAsset, onOpenSettings, onOpenAbout }: Props = $props();
 
-  const appTitle = "Colormo AI Prompt Manager";
+  const appTitle = "Prompt Manager";
   const currentTheme = $derived($theme);
   const currentViewMode = $derived($viewMode);
 </script>
@@ -36,6 +36,7 @@
         class:app-header__icon-btn--active={currentViewMode === "list"}
         aria-pressed={currentViewMode === "list"}
         aria-label="List view"
+        title="List view"
         onclick={() => setViewMode("list")}
       >
         <svg
@@ -59,6 +60,7 @@
         class:app-header__icon-btn--active={currentViewMode === "grid"}
         aria-pressed={currentViewMode === "grid"}
         aria-label="Grid view"
+        title="Grid view"
         onclick={() => setViewMode("grid")}
       >
         <svg
@@ -112,6 +114,7 @@
       type="button"
       class="app-header__icon-btn"
       aria-label="Data"
+      title="Export, import, and reset"
       onclick={onOpenSettings}
     >
       <svg
@@ -143,6 +146,9 @@
       class="app-header__icon-btn"
       aria-pressed={currentTheme === "dark"}
       aria-label={currentTheme === "dark"
+        ? "Switch to light theme"
+        : "Switch to dark theme"}
+      title={currentTheme === "dark"
         ? "Switch to light theme"
         : "Switch to dark theme"}
       onclick={toggleTheme}
@@ -219,7 +225,8 @@
   }
 
   .app-header__view-toggle {
-    display: inline-flex;
+    /* display: inline-flex; */
+    display: none;
     align-items: center;
     gap: var(--space-1);
     margin: 0;

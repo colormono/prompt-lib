@@ -1,4 +1,4 @@
-# Colormo AI Prompt Manager
+# Colormono AI Prompt Manager
 
 A personal catalog for the prompts, skills, tools, and resources I use to get my work done.
 
