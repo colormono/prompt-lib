@@ -11,6 +11,8 @@
     help?: string;
     disabled?: boolean;
     required?: boolean;
+    /** Keep the label for a11y but hide it visually (toolbar / compact fields). */
+    hideLabel?: boolean;
   }
 
   let {
@@ -23,6 +25,7 @@
     help,
     disabled = false,
     required = false,
+    hideLabel = false,
     ...rest
   }: Props = $props();
 
@@ -34,7 +37,7 @@
 
 <div class="field">
   <!-- biome-ignore lint/a11y/noLabelWithoutControl: label content is the dynamic `label` prop, associated via matching for/id -->
-  <label class="field__label" for={inputId}>
+  <label class="field__label" class:sr-only={hideLabel} for={inputId}>
     {label}
     {#if required}<span class="field__required" aria-hidden="true">*</span
       >{/if}

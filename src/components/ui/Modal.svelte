@@ -125,7 +125,7 @@
     align-items: center;
     justify-content: center;
     padding: var(--space-4);
-    background-color: rgba(12, 13, 17, 0.5);
+    background-color: color-mix(in srgb, var(--color-ink) 45%, transparent);
     z-index: 100;
   }
 
@@ -136,7 +136,8 @@
     max-width: 32rem;
     max-height: calc(100vh - var(--space-8));
     overflow: hidden;
-    background-color: var(--color-surface-raised);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
   }
@@ -153,6 +154,8 @@
 
   .modal__title {
     font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-title);
   }
 
   .modal__close {

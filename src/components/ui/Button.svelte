@@ -3,7 +3,7 @@
   import type { HTMLButtonAttributes } from "svelte/elements";
 
   interface Props extends HTMLButtonAttributes {
-    variant?: "primary" | "secondary" | "ghost" | "danger";
+    variant?: "primary" | "secondary" | "ghost" | "danger" | "action";
     size?: "sm" | "md" | "lg";
     icon?: Snippet;
     children: Snippet;
@@ -42,8 +42,9 @@
     gap: var(--space-2);
     border-radius: var(--radius-md);
     border: 1px solid transparent;
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-regular);
     line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-body);
     white-space: nowrap;
     transition:
       background-color var(--transition-fast),
@@ -61,23 +62,22 @@
     align-items: center;
   }
 
-  /* Sizes */
   .btn--sm {
-    padding: var(--space-1) var(--space-3);
+    padding: 0.4em 0.85em;
     font-size: var(--font-size-sm);
   }
 
   .btn--md {
-    padding: var(--space-2) var(--space-4);
+    padding: 0.78em 1.35em 0.8em;
     font-size: var(--font-size-base);
   }
 
   .btn--lg {
-    padding: var(--space-3) var(--space-6);
+    padding: 0.85em 1.5em;
     font-size: var(--font-size-md);
   }
 
-  /* Variants */
+  /* Ink on parchment — highest-contrast CTA */
   .btn--primary {
     background-color: var(--color-accent-solid);
     color: var(--color-text-on-brand);
@@ -91,23 +91,35 @@
     background-color: var(--color-accent-solid-active);
   }
 
+  /* Linen secondary */
   .btn--secondary {
-    background-color: var(--color-surface);
-    border-color: var(--color-border-strong);
+    background-color: var(--color-surface-raised);
     color: var(--color-text);
   }
 
   .btn--secondary:not(:disabled):hover {
-    background-color: var(--color-bg-subtle);
+    background-color: color-mix(in srgb, var(--color-surface-raised) 80%, var(--color-ink));
   }
 
   .btn--ghost {
     background-color: transparent;
-    color: var(--color-text);
+    color: color-mix(in srgb, var(--color-text) 60%, transparent);
   }
 
   .btn--ghost:not(:disabled):hover {
-    background-color: var(--color-bg-subtle);
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  /* Amber in-product action */
+  .btn--action {
+    background-color: var(--color-action);
+    color: var(--color-action-text);
+  }
+
+  .btn--action:not(:disabled):hover {
+    background-color: var(--color-action-hover);
   }
 
   .btn--danger {

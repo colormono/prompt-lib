@@ -25,10 +25,10 @@
     AssetType,
     "brand" | "success" | "warning" | "neutral"
   > = {
-    prompt: "brand",
+    prompt: "neutral",
     skill: "success",
     tool: "warning",
-    resource: "neutral",
+    resource: "brand",
   };
 
   const PREVIEW_LENGTH = 200;
@@ -98,9 +98,32 @@
     event.stopPropagation();
     toggleFavorite(asset.id);
   }
+
+  function handleResetSlots(event: MouseEvent) {
+    event.stopPropagation();
+    slotValues = { ...asset.slots };
+  }
+
+  const tokenEstimate = $derived(
+    asset.type === "prompt"
+      ? Math.max(1, Math.round(asset.prompt.trim().split(/\s+/).length * 1.3))
+      : 0,
+  );
+
+  const metaPills = $derived.by(() => {
+    if (asset.type !== "prompt") return [];
+    const pills: string[] = [];
+    if (asset.model) pills.push(asset.model);
+    pills.push(formatTaxonomyLabel(asset.category));
+    for (const role of asset.roles) {
+      pills.push(formatTaxonomyLabel(role));
+    }
+    pills.push(`~${tokenEstimate} tokens`);
+    return pills;
+  });
 </script>
 
-<Card>
+<Card padding="sm">
   <div class="asset-card">
     <div class="asset-card__top">
       <Badge variant={TYPE_VARIANTS[asset.type]}>
@@ -117,15 +140,29 @@
         <button
           type="button"
           class="asset-card__icon-btn"
+          class:asset-card__icon-btn--ok={copied && !copyError}
+          class:asset-card__icon-btn--err={copyError}
           aria-label={asset.type === "prompt"
             ? "Copy prompt template"
             : "Copy to clipboard"}
           onclick={handleHeaderCopy}
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" />
-            <path d="M3 10.5V3.5a1 1 0 0 1 1-1h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-          </svg>
+          {#if copied && !copyError}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path
+                d="M3.5 8.5 6.5 11.5 12.5 4.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          {:else}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+              <path d="M3 10.5V3.5a1 1 0 0 1 1-1h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+          {/if}
         </button>
         <button
           type="button"
@@ -177,44 +214,121 @@
       {/if}
     </button>
 
-    <p class="asset-card__status" aria-live="polite">
-      {#if copied}Copied{:else if copyError}Couldn't copy{/if}
+    <p class="sr-only" aria-live="polite">
+      {#if copied}Copied to clipboard{:else if copyError}Couldn't copy{/if}
     </p>
 
     {#if expanded}
-      <div class="asset-card__panel">
-        {#if asset.type === "prompt"}
-          <p class="asset-card__panel-label">Fill in and copy</p>
-          <p class="asset-card__fill">
+      {#if asset.type === "prompt"}
+        <div class="code-block">
+          <div class="code-block__header">
+            <div class="code-block__dots" aria-hidden="true">
+              <span class="code-block__dot code-block__dot--red"></span>
+              <span class="code-block__dot code-block__dot--amber"></span>
+              <span class="code-block__dot code-block__dot--green"></span>
+            </div>
+            <div class="code-block__actions">
+              <button
+                type="button"
+                class="code-block__ghost-btn"
+                aria-label="Reset slot values"
+                onclick={handleResetSlots}
+              >
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path
+                    d="M3.5 3.5v3h3M12.5 12.5v-3h-3"
+                    stroke="currentColor"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M4.2 9.5A4.5 4.5 0 0 0 12 11.2M11.8 6.5A4.5 4.5 0 0 0 4 4.8"
+                    stroke="currentColor"
+                    stroke-width="1.3"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Reset
+              </button>
+              <button
+                type="button"
+                class="code-block__copy-btn"
+                class:code-block__copy-btn--ok={copied && !copyError}
+                aria-label="Copy with filled slots"
+                onclick={handleFilledCopy}
+              >
+                {#if copied && !copyError}
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M3.5 8.5 6.5 11.5 12.5 4.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Copied
+                {:else}
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <rect
+                      x="5.5"
+                      y="5.5"
+                      width="8"
+                      height="8"
+                      rx="1.5"
+                      stroke="currentColor"
+                      stroke-width="1.3"
+                    />
+                    <path
+                      d="M3 10.5V3.5a1 1 0 0 1 1-1h7"
+                      stroke="currentColor"
+                      stroke-width="1.3"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  Copy
+                {/if}
+              </button>
+            </div>
+          </div>
+
+          <p class="code-block__body">
             {#each promptSegments as segment, index (index)}
               {#if segment.type === "text"}{segment.value}{:else}<input
-                  class="asset-card__slot-input"
+                  class="code-block__slot"
                   aria-label={segment.key}
                   size={Math.max((slotValues[segment.key] ?? "").length, 4)}
                   bind:value={slotValues[segment.key]}
                 />{/if}
             {/each}
           </p>
-          <button
-            type="button"
-            class="asset-card__copy-btn"
-            aria-label="Copy with filled slots"
-            onclick={handleFilledCopy}
-          >
-            Copy filled
-          </button>
-          {#if asset.description}
+
+          {#if metaPills.length > 0}
+            <div class="code-block__meta">
+              {#each metaPills as pill, index (index)}
+                <span class="code-block__pill">{pill}</span>
+              {/each}
+            </div>
+          {/if}
+        </div>
+        {#if asset.description}
+          <div class="asset-card__note">
             <p class="asset-card__panel-label">Why this works</p>
             <p class="asset-card__why">{asset.description}</p>
-          {/if}
-        {:else if asset.type === "skill"}
-          <p class="asset-card__why">{asset.body}</p>
-        {:else}
-          <p class="asset-card__why">
-            <a href={asset.url} target="_blank" rel="noreferrer">{asset.url}</a>
-          </p>
+          </div>
         {/if}
-      </div>
+      {:else}
+        <div class="asset-card__panel">
+          {#if asset.type === "skill"}
+            <p class="asset-card__why">{asset.body}</p>
+          {:else}
+            <p class="asset-card__why">
+              <a href={asset.url} target="_blank" rel="noreferrer">{asset.url}</a>
+            </p>
+          {/if}
+        </div>
+      {/if}
     {/if}
   </div>
 </Card>
@@ -223,13 +337,13 @@
   .asset-card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-1);
   }
 
   .asset-card__top {
     display: flex;
-    align-items: flex-start;
-    gap: var(--space-2);
+    align-items: center;
+    gap: var(--space-1);
   }
 
   .asset-card__actions {
@@ -237,7 +351,7 @@
     flex-grow: 1;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--space-1);
+    gap: 0;
   }
 
   .asset-card__icon-btn {
@@ -250,7 +364,6 @@
     border-radius: var(--radius-md);
     background: transparent;
     color: var(--color-text-muted);
-    font-size: var(--font-size-md);
     cursor: pointer;
     transition: color var(--transition-fast);
   }
@@ -266,10 +379,16 @@
   }
 
   .asset-card__icon-btn--active {
-    /* Electric Indigo, not --color-warning: favoriting is an actionable
-       selection state, not a status signal, and warning/amber is already
-       reserved for the "Tool" type badge (see DESIGN.md's One Signal Rule). */
+    /* Ember marks actionable selection (favorite), not a status signal. */
     color: var(--color-accent);
+  }
+
+  .asset-card__icon-btn--ok {
+    color: var(--color-success);
+  }
+
+  .asset-card__icon-btn--err {
+    color: var(--color-danger);
   }
 
   .asset-card__toggle {
@@ -284,7 +403,9 @@
 
   .asset-card__title {
     font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-body);
+    line-height: var(--line-height-tight);
     color: var(--color-text);
     transition: color var(--transition-fast);
   }
@@ -295,8 +416,9 @@
 
   .asset-card__preview {
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     font-family: var(--font-family-mono);
+    line-height: 1.55;
     overflow-wrap: anywhere;
   }
 
@@ -306,62 +428,176 @@
     gap: var(--space-1);
   }
 
-  .asset-card__status {
-    min-height: 1rem;
-    font-size: var(--font-size-xs);
-    color: var(--color-success);
-  }
-
   .asset-card__panel {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-3);
+    gap: var(--space-1);
+    padding: var(--space-2);
     border-radius: var(--radius-md);
     background-color: var(--color-bg-subtle);
   }
 
+  .asset-card__note {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+  }
+
   .asset-card__panel-label {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-muted);
-  }
-
-  .asset-card__fill {
     font-family: var(--font-family-mono);
-    font-size: var(--font-size-sm);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-text);
-    overflow-wrap: anywhere;
-  }
-
-  .asset-card__slot-input {
-    display: inline-block;
-    max-inline-size: 100%;
-    padding: 0 var(--space-1);
-    border: 1px dashed var(--color-accent);
-    border-radius: var(--radius-sm);
-    background-color: var(--color-accent-subtle);
-    color: var(--color-text);
-    font: inherit;
-  }
-
-  .asset-card__copy-btn {
-    align-self: flex-start;
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-md);
-    background-color: var(--color-accent-solid);
-    color: var(--color-text-on-brand);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-  }
-
-  .asset-card__copy-btn:hover {
-    background-color: var(--color-accent-solid-hover);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-muted);
   }
 
   .asset-card__why {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    font-family: var(--font-family-editorial);
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+
+  /* Warm dark prompt code block — compact */
+  .code-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--color-code-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-code-surface);
+  }
+
+  .code-block__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .code-block__dots {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .code-block__dot {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .code-block__dot--red {
+    background-color: var(--color-code-dot-red);
+  }
+
+  .code-block__dot--amber {
+    background-color: var(--color-code-dot-amber);
+  }
+
+  .code-block__dot--green {
+    background-color: var(--color-code-dot-green);
+  }
+
+  .code-block__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .code-block__ghost-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0.15em 0.4em;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-code-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+
+  .code-block__ghost-btn:hover {
+    color: var(--color-code-text);
+  }
+
+  .code-block__ghost-btn:focus-visible,
+  .code-block__copy-btn:focus-visible,
+  .code-block__slot:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .code-block__copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    min-inline-size: 5.25rem;
+    padding: 0.2em 0.55em;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-action);
+    color: var(--color-action-text);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .code-block__copy-btn--ok {
+    background-color: var(--color-forest);
+  }
+
+  .code-block__copy-btn:hover {
+    background-color: var(--color-action-hover);
+  }
+
+  .code-block__copy-btn--ok:hover {
+    background-color: var(--color-forest);
+  }
+
+  .code-block__body {
+    margin: 0;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-xs);
+    line-height: 1.5;
+    color: var(--color-code-text);
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  .code-block__slot {
+    display: inline-block;
+    max-inline-size: 100%;
+    margin-inline: 0.05em;
+    padding: 0 0.2em;
+    border: 1px dashed var(--color-code-slot-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-code-slot-bg);
+    color: var(--color-amber);
+    font: inherit;
+  }
+
+  .code-block__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .code-block__pill {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-code-text-muted);
+    font-family: var(--font-family-mono);
+    font-size: 0.6875rem;
+    font-weight: var(--font-weight-regular);
   }
 </style>

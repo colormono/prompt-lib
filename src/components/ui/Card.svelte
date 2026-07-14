@@ -29,13 +29,13 @@
     overflow: hidden;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
   }
 
   .card__header {
     border-bottom: 1px solid var(--color-border);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-medium);
   }
 
   .card__footer {
@@ -43,14 +43,14 @@
   }
 
   .card--padding-sm > * {
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-3) var(--space-4);
   }
 
   .card--padding-md > * {
-    padding: var(--space-4);
+    padding: var(--space-3) var(--space-4) var(--space-5);
   }
 
   .card--padding-lg > * {
-    padding: var(--space-6);
+    padding: var(--space-4) var(--space-5) var(--space-6);
   }
 </style>

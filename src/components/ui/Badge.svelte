@@ -17,28 +17,34 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-pill);
+    padding: 0.2em 0.55em;
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-mono);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-tight);
+    letter-spacing: 0;
   }
 
+  /* Resource + role chips — ink on linen */
   .badge--neutral {
-    border: 1px solid var(--color-bg-subtle);
-    color: var(--color-text-muted);
+    background-color: var(--color-surface-raised);
+    color: var(--color-text-secondary);
   }
 
+  /* Prompt — ember on warm wash */
   .badge--brand {
     background-color: var(--color-accent-subtle);
     color: var(--color-accent);
   }
 
+  /* Skill */
   .badge--success {
     background-color: var(--color-success-subtle);
     color: var(--color-success);
   }
 
+  /* Tool */
   .badge--warning {
     background-color: var(--color-warning-subtle);
     color: var(--color-warning);

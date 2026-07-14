@@ -46,7 +46,7 @@ describe("App", () => {
   it("renders the app title and an empty library", () => {
     render(App);
     expect(
-      screen.getByRole("heading", { name: "Colormono AI Prompt Manager" }),
+      screen.getByRole("heading", { name: "Prompt Manager" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Your library is empty.")).toBeInTheDocument();
   });
@@ -85,7 +85,7 @@ describe("App", () => {
     );
 
     await fireEvent.click(
-      screen.getByRole("checkbox", { name: "Favorites only" }),
+      screen.getByRole("button", { name: "Favorites only" }),
     );
 
     expect(screen.queryByText("Summarize doc")).not.toBeInTheDocument();

@@ -16,33 +16,29 @@
     setTheme(theme);
   }
 
-  const neutralSwatches = [
-    "0",
-    "50",
-    "100",
-    "200",
-    "300",
-    "400",
-    "500",
-    "600",
-    "700",
-    "800",
-    "900",
-    "950",
-  ].map((step) => ({ label: `neutral-${step}`, cssVar: `--color-neutral-${step}` }));
-
-  const brandSwatches = ["100", "300", "500", "600", "700"].map((step) => ({
-    label: `brand-${step}`,
-    cssVar: `--color-brand-${step}`,
-  }));
+  const paletteSwatches = [
+    { label: "parchment", cssVar: "--color-parchment" },
+    { label: "bone", cssVar: "--color-bone" },
+    { label: "linen", cssVar: "--color-linen" },
+    { label: "stone", cssVar: "--color-stone" },
+    { label: "mist", cssVar: "--color-mist" },
+    { label: "driftwood", cssVar: "--color-driftwood" },
+    { label: "ash", cssVar: "--color-ash" },
+    { label: "ink", cssVar: "--color-ink" },
+    { label: "ember", cssVar: "--color-ember" },
+    { label: "amber", cssVar: "--color-amber" },
+    { label: "forest", cssVar: "--color-forest" },
+    { label: "verdant", cssVar: "--color-verdant" },
+    { label: "crimson", cssVar: "--color-crimson" },
+  ];
 
   const semanticSwatches = [
-    { label: "success-500", cssVar: "--color-success-500" },
-    { label: "success-100", cssVar: "--color-success-100" },
-    { label: "warning-500", cssVar: "--color-warning-500" },
-    { label: "warning-100", cssVar: "--color-warning-100" },
-    { label: "danger-500", cssVar: "--color-danger-500" },
-    { label: "danger-100", cssVar: "--color-danger-100" },
+    { label: "success", cssVar: "--color-success" },
+    { label: "success-subtle", cssVar: "--color-success-subtle" },
+    { label: "warning", cssVar: "--color-warning" },
+    { label: "warning-subtle", cssVar: "--color-warning-subtle" },
+    { label: "danger", cssVar: "--color-danger" },
+    { label: "danger-subtle", cssVar: "--color-danger-subtle" },
   ];
 
   const roleSwatches = [
@@ -54,26 +50,20 @@
     "border-strong",
     "text",
     "text-muted",
+    "text-secondary",
     "accent",
-    "accent-hover",
-    "accent-active",
-    "accent-subtle",
+    "accent-solid",
+    "action",
     "success",
     "warning",
     "danger",
     "focus-ring",
   ].map((name) => ({ label: name, cssVar: `--color-${name}` }));
 
-  const typeScale = [
-    "xs",
-    "sm",
-    "base",
-    "md",
-    "lg",
-    "xl",
-    "2xl",
-    "3xl",
-  ].map((step) => ({ label: step, cssVar: `--font-size-${step}` }));
+  const typeScale = ["xs", "sm", "base", "md", "lg", "xl"].map((step) => ({
+    label: step,
+    cssVar: `--font-size-${step}`,
+  }));
 
   const spacingScale = [
     "0",
@@ -89,7 +79,7 @@
     "16",
   ].map((step) => ({ label: `space-${step}`, cssVar: `--space-${step}` }));
 
-  const radiiScale = ["sm", "md", "lg", "pill"].map((step) => ({
+  const radiiScale = ["sm", "md", "lg"].map((step) => ({
     label: `radius-${step}`,
     cssVar: `--radius-${step}`,
   }));
@@ -99,7 +89,13 @@
     cssVar: `--shadow-${step}`,
   }));
 
-  const buttonVariants = ["primary", "secondary", "ghost", "danger"] as const;
+  const buttonVariants = [
+    "primary",
+    "secondary",
+    "ghost",
+    "action",
+    "danger",
+  ] as const;
   const buttonSizes = ["sm", "md", "lg"] as const;
   const badgeVariants = ["neutral", "brand", "success", "warning", "danger"] as const;
 
@@ -132,24 +128,9 @@
   </header>
 
   <section class="style-guide__section">
-    <h2>Colors — neutral scale</h2>
+    <h2>Colors — palette</h2>
     <div class="swatch-grid">
-      {#each neutralSwatches as swatch (swatch.cssVar)}
-        <div class="swatch">
-          <span
-            class="swatch__color"
-            style="background-color: var({swatch.cssVar})"
-          ></span>
-          <span class="swatch__label">{swatch.label}</span>
-        </div>
-      {/each}
-    </div>
-  </section>
-
-  <section class="style-guide__section">
-    <h2>Colors — brand</h2>
-    <div class="swatch-grid">
-      {#each brandSwatches as swatch (swatch.cssVar)}
+      {#each paletteSwatches as swatch (swatch.cssVar)}
         <div class="swatch">
           <span
             class="swatch__color"

@@ -198,8 +198,10 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-    padding: var(--space-3) var(--space-4);
-    background-color: var(--color-surface);
+    min-height: 3.25rem;
+    padding: var(--space-3) var(--space-6);
+    background-color: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -215,6 +217,8 @@
 
   .app-header__title {
     font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-title);
   }
 
   .app-header__actions {
@@ -225,7 +229,6 @@
   }
 
   .app-header__view-toggle {
-    /* display: inline-flex; */
     display: none;
     align-items: center;
     gap: var(--space-1);
@@ -258,7 +261,7 @@
 
   .app-header__icon-btn--active {
     background-color: var(--color-surface-raised);
-    color: var(--color-accent);
+    color: var(--color-text);
     box-shadow: var(--shadow-sm);
   }
 </style>

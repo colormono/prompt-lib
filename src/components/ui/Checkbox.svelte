@@ -58,7 +58,7 @@
   .checkbox-field__control {
     inline-size: 1.125rem;
     block-size: 1.125rem;
-    accent-color: var(--color-accent);
+    accent-color: var(--color-accent-solid);
   }
 
   .checkbox-field__control:disabled {

@@ -25,6 +25,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-body);
   line-height: var(--line-height-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
@@ -61,6 +63,12 @@ button:disabled {
 
 a {
   color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
 }
 
 ul,
@@ -75,8 +83,19 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-title);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--font-size-lg);
+}
+
+h2,
+h3 {
+  font-size: var(--font-size-md);
 }
 
 /* Consistent, visible focus ring for keyboard navigation across every
@@ -98,4 +117,15 @@ h6 {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
