@@ -3,7 +3,9 @@
   import type { Asset } from "../lib/types";
   import AssetCard from "./AssetCard.svelte";
   import FilterBar from "./FilterBar.svelte";
+  import LocalFirstDisclaimer from "./LocalFirstDisclaimer.svelte";
   import Button from "./ui/Button.svelte";
+
 
   interface Props {
     onCreate: () => void;
@@ -22,8 +24,13 @@
 <section class="asset-list" aria-labelledby="asset-list-heading">
   <h2 id="asset-list-heading" class="sr-only">Library</h2>
   {#if !libraryIsEmpty}
-    <FilterBar />
+    <div class="asset-list__chrome">
+      <LocalFirstDisclaimer />
+      <FilterBar />
+    </div>
   {/if}
+
+
 
   {#if libraryIsEmpty}
     <div class="asset-list__empty">
@@ -56,6 +63,12 @@
     max-width: 81.25rem;
     margin: 0 auto;
     padding: var(--space-4) var(--space-6);
+  }
+
+  .asset-list__chrome {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
   }
 
   .asset-list__empty {

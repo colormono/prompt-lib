@@ -164,12 +164,15 @@
 
   .import-panel h3 {
     font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-title);
   }
 
   .import-panel__description {
+    max-width: 48ch;
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-secondary);
   }
 
   .import-panel__field {

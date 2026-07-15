@@ -121,12 +121,40 @@
   .conflict-row__option {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1);
+    gap: var(--space-2);
     font-size: var(--font-size-sm);
+    letter-spacing: var(--letter-spacing-body);
     color: var(--color-text);
   }
 
   .conflict-row__option input {
-    accent-color: var(--color-accent);
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    margin: 0;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .conflict-row__option input:hover {
+    border-color: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  }
+
+  .conflict-row__option input:checked {
+    border-color: var(--color-accent-solid);
+    background-color: var(--color-surface);
+    box-shadow: inset 0 0 0 0.275rem var(--color-accent-solid);
+  }
+
+  .conflict-row__option label {
+    cursor: pointer;
   }
 </style>

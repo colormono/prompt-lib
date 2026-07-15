@@ -67,6 +67,7 @@
   .field__label {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
+    letter-spacing: 0.004em;
     color: var(--color-text);
   }
 
@@ -76,6 +77,7 @@
   }
 
   .field__control {
+    width: 100%;
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border-strong);
@@ -83,12 +85,22 @@
     color: var(--color-text);
     font-size: var(--font-size-base);
     font-family: inherit;
+    letter-spacing: var(--letter-spacing-body);
+    line-height: var(--line-height-normal);
     resize: vertical;
     transition: border-color var(--transition-fast);
   }
 
   .field__control::placeholder {
     color: var(--color-text-muted);
+  }
+
+  .field__control:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  }
+
+  .field__control:focus {
+    border-color: color-mix(in srgb, var(--color-ink) 28%, transparent);
   }
 
   .field__control:disabled {

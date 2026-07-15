@@ -36,7 +36,7 @@
 
 <Modal
   bind:open
-  title={confirmingReset ? "Reset to starter library?" : "Data"}
+  title={confirmingReset ? "Reset to starter library?" : "Settings"}
   onclose={() => (confirmingReset = false)}
   footer={confirmingReset ? resetFooter : undefined}
 >
@@ -84,11 +84,14 @@
 
   .settings-panel__section h3 {
     font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-title);
   }
 
   .settings-panel__description {
+    max-width: 48ch;
     font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-secondary);
   }
 </style>

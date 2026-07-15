@@ -122,9 +122,10 @@
     position: fixed;
     inset: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: var(--space-4);
+    padding: var(--space-8) var(--space-4);
+    overflow-y: auto;
     background-color: color-mix(in srgb, var(--color-ink) 45%, transparent);
     z-index: 100;
   }
